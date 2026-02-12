@@ -744,7 +744,7 @@ export default function Home() {
                       fontSize: '1.1rem',
                       fontWeight: '600',
                     }}>
-                      {selectedBooking.startTime}:00 - {selectedBooking.endTime}:00
+                      {formatTime(selectedBooking.startTime)} - {formatTime(selectedBooking.endTime)}
                     </div>
                   </div>
                 </div>
