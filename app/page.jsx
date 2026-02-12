@@ -75,10 +75,21 @@ export default function Home() {
     { name: 'Biology Lab 2', color: '#B8F4E8', category: 'Biology' },
   ];
 
-  const hours = Array.from({ length: 12 }, (_, i) => i + 8); // 8 AM to 7 PM
+  // 30-minute intervals from 8 AM to 7 PM (24 slots)
+  const hours = Array.from({ length: 24 }, (_, i) => {
+    const hour = Math.floor(i / 2) + 8;
+    const minutes = (i % 2) * 30;
+    return hour + minutes / 60;
+  });
   
   const getDayName = (date) => {
     return date.toLocaleDateString('en-US', { weekday: 'long' });
+  };
+
+  const formatTime = (timeValue) => {
+    const hour = Math.floor(timeValue);
+    const minutes = Math.round((timeValue % 1) * 60);
+    return `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   };
 
   // Fetch booking data from Google Sheets
@@ -392,7 +403,7 @@ export default function Home() {
                     fontSize: '0.85rem',
                   }}
                 >
-                  {hour}:00
+                  {formatTime(hour)}
                 </div>
                 {weekDates.map((date, index) => {
                   const booking = getBookingForSlot(date, hour);
@@ -456,7 +467,7 @@ export default function Home() {
                             marginTop: '4px',
                             fontWeight: '600',
                           }}>
-                            {booking.startTime}:00 - {booking.endTime}:00
+                            {formatTime(booking.startTime)} - {formatTime(booking.endTime)}
                           </div>
                         </div>
                       )}

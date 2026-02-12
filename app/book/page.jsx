@@ -29,10 +29,14 @@ export default function book() {
     { name: 'Biology Lab 2', color: '#B8F4E8', category: 'Biology' },
   ];
 
-  const timeSlots = Array.from({ length: 12 }, (_, i) => ({
-    value: i + 8,
-    label: `${i + 8}:00`,
-  }));
+  const timeSlots = Array.from({ length: 24 }, (_, i) => {
+    const hour = Math.floor(i / 2) + 8;
+    const minutes = (i % 2) * 30;
+    return {
+      value: hour + minutes / 60,
+      label: `${hour}:${minutes === 0 ? '00' : '30'}`,
+    };
+  });
 
   const handleInputChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
@@ -51,16 +55,30 @@ export default function book() {
     }
   };
 
+  const formatTimeForSheet = (timeValue) => {
+    if (!timeValue) return '';
+    const hour = Math.floor(timeValue);
+    const minutes = Math.round((timeValue % 1) * 60);
+    return `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     try {
+      // Format times before sending
+      const formDataToSend = {
+        ...formData,
+        startTime: formatTimeForSheet(formData.startTime),
+        endTime: formatTimeForSheet(formData.endTime),
+      };
+
       const response = await fetch('/api/google', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formDataToSend),
       });
 
       if (response.ok) {

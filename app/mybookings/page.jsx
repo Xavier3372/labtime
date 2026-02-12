@@ -296,7 +296,7 @@ export default function mybookings() {
                           margin: 0,
                           fontWeight: '600',
                         }}>
-                          {booking.startTime}:00 - {booking.endTime}:00
+                          {Math.floor(booking.startTime)}:{((booking.startTime % 1) * 60).toFixed(0).padStart(2, '0')} - {Math.floor(booking.endTime)}:{((booking.endTime % 1) * 60).toFixed(0).padStart(2, '0')}
                         </p>
                       </div>
 

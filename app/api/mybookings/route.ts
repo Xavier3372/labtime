@@ -32,6 +32,15 @@ export async function POST(req: Request) {
         // Filter bookings by phone number
         const userBookings: any[] = [];
 
+        // Convert time format "08:30" to decimal 8.5
+        const parseTimeFormat = (timeStr: any) => {
+            if (!timeStr) return 8;
+            if (typeof timeStr === 'number') return timeStr; // Already a number
+            const timeString = timeStr.toString().trim();
+            const [hours, minutes] = timeString.split(':').map(Number);
+            return hours + (minutes || 0) / 60;
+        };
+
         rows.forEach((row: any[]) => {
             const [lab, date, startTime, endTime, title, teacher, email, userPhone, notes, approved] = row;
             
@@ -42,8 +51,8 @@ export async function POST(req: Request) {
                 userBookings.push({
                     lab,
                     date,
-                    startTime: parseInt(startTime) || 8,
-                    endTime: parseInt(endTime) || 9,
+                    startTime: parseTimeFormat(startTime),
+                    endTime: parseTimeFormat(endTime),
                     title: title || 'Booking',
                     teacher: teacher || 'TBD',
                     email: email || '',
