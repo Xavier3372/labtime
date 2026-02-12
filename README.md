@@ -31,4 +31,10 @@ The program can now be deployed onto any NextJs hosting service like [vercel](ht
 
 Bookings from the booking form are passed into the google sheet, where a lab can be assigned and the booking can be approved. Approved bookings show up on the home page. Teachers can also check their bookings by entering in their phone number in the "My Bookings" page. Lab techs can be added and their status and location can be updated by using the status page of the google sheet.
 
+##Todo
+
+<b>1. </b>Add cancellation system
+<b>2. </b>Add admin panel
+<b>3. </b>Check for booking conflicts
+
 ###### Developed with ❤️ by [Xavier Koh](https://github.com/Xavier3372)
