@@ -4,14 +4,16 @@ import { useState } from 'react';
 
 export default function book() {
   const [formData, setFormData] = useState({
-    lab: '',
     date: '',
     startTime: '',
     endTime: '',
     title: '',
     teacher: '',
-    email: '',
     phone: '',
+    numStudents: '',
+    level: '',
+    class: '',
+    subject: '',
     notes: '',
   });
 
@@ -99,21 +101,22 @@ export default function book() {
       setShowConfirmation(false);
       // Reset form
       setFormData({
-        lab: '',
         date: '',
         startTime: '',
         endTime: '',
         title: '',
         teacher: '',
-        email: '',
         phone: '',
+        numStudents: '',
+        level: '',
+        class: '',
+        subject: '',
         notes: '',
       });
     }, 3000);
   };
 
-  const selectedLabData = labs.find(lab => lab.name === formData.lab);
-  const labColor = selectedLabData?.color || '#FFD700';
+  const labColor = '#FFD700';
 
   return (
     <div style={{
@@ -285,67 +288,7 @@ export default function book() {
           border: '1px solid rgba(255, 255, 255, 0.1)',
           boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
         }}>
-          {/* Lab Selection */}
-          <div style={{ marginBottom: '30px' }}>
-            <label style={{
-              display: 'block',
-              color: '#FFD700',
-              fontSize: '1rem',
-              fontWeight: '600',
-              marginBottom: '15px',
-              letterSpacing: '0.5px',
-            }}>
-              Select Laboratory *
-            </label>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '15px',
-            }}>
-              {labs.map((lab) => (
-                <button
-                  key={lab.name}
-                  type="button"
-                  onClick={() => handleInputChange('lab', lab.name)}
-                  style={{
-                    padding: '20px',
-                    border: formData.lab === lab.name ? `3px solid ${lab.color}` : '2px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: '15px',
-                    background: formData.lab === lab.name 
-                      ? `linear-gradient(135deg, ${lab.color}22 0%, ${lab.color}11 100%)`
-                      : 'rgba(255, 255, 255, 0.05)',
-                    color: formData.lab === lab.name ? lab.color : '#ffffff',
-                    cursor: 'pointer',
-                    fontSize: '0.95rem',
-                    fontWeight: '600',
-                    transition: 'all 0.3s ease',
-                    textAlign: 'center',
-                  }}
-                  onMouseEnter={(e) => {
-                    if (formData.lab !== lab.name) {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (formData.lab !== lab.name) {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                      e.currentTarget.style.transform = 'translateY(0)';
-                    }
-                  }}
-                >
-                  <div style={{ marginBottom: '5px' }}>{lab.name}</div>
-                  <div style={{
-                    fontSize: '0.75rem',
-                    opacity: 0.7,
-                    fontWeight: '400',
-                  }}>
-                    {lab.category}
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
+
 
           {/* Date and Time Row */}
           <div style={{
@@ -578,47 +521,6 @@ export default function book() {
             gap: '20px',
             marginBottom: '30px',
           }}>
-            {/* Email */}
-            <div>
-              <label style={{
-                display: 'block',
-                color: '#FFD700',
-                fontSize: '1rem',
-                fontWeight: '600',
-                marginBottom: '12px',
-                letterSpacing: '0.5px',
-              }}>
-                Email *
-              </label>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                placeholder="e.g., student@school.com"
-                required
-                style={{
-                  width: '100%',
-                  padding: '15px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '2px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '12px',
-                  color: '#ffffff',
-                  fontSize: '1rem',
-                  fontFamily: '"Poppins", sans-serif',
-                  transition: 'all 0.3s ease',
-                  outline: 'none',
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.border = `2px solid ${labColor}`;
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                }}
-              />
-            </div>
-
             {/* Phone Number */}
             <div>
               <label style={{
@@ -658,6 +560,194 @@ export default function book() {
                   e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
                 }}
               />
+            </div>
+          </div>
+
+          {/* Number of Students, Level, and Class Row */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '20px',
+            marginBottom: '30px',
+          }}>
+            {/* Number of Students */}
+            <div>
+              <label style={{
+                display: 'block',
+                color: '#FFD700',
+                fontSize: '1rem',
+                fontWeight: '600',
+                marginBottom: '12px',
+                letterSpacing: '0.5px',
+              }}>
+                Number of Students *
+              </label>
+              <input
+                type="number"
+                value={formData.numStudents}
+                onChange={(e) => handleInputChange('numStudents', e.target.value)}
+                placeholder="e.g., 25"
+                required
+                min="1"
+                style={{
+                  width: '100%',
+                  padding: '15px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  color: '#ffffff',
+                  fontSize: '1rem',
+                  fontFamily: '"Poppins", sans-serif',
+                  transition: 'all 0.3s ease',
+                  outline: 'none',
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.border = `2px solid ${labColor}`;
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                }}
+              />
+            </div>
+
+            {/* Level */}
+            <div>
+              <label style={{
+                display: 'block',
+                color: '#FFD700',
+                fontSize: '1rem',
+                fontWeight: '600',
+                marginBottom: '12px',
+                letterSpacing: '0.5px',
+              }}>
+                Level *
+              </label>
+              <select
+                value={formData.level}
+                onChange={(e) => handleInputChange('level', e.target.value)}
+                required
+                style={{
+                  width: '100%',
+                  padding: '15px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  color: formData.level ? '#ffffff' : '#a0a0c0',
+                  fontSize: '1rem',
+                  fontFamily: '"Poppins", sans-serif',
+                  transition: 'all 0.3s ease',
+                  outline: 'none',
+                  cursor: 'pointer',
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.border = `2px solid ${labColor}`;
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                }}
+              >
+                <option value="">Select level</option>
+                <option value="Secondary 1" style={{ background: '#1a1a2e' }}>Secondary 1</option>
+                <option value="Secondary 2" style={{ background: '#1a1a2e' }}>Secondary 2</option>
+                <option value="Secondary 3" style={{ background: '#1a1a2e' }}>Secondary 3</option>
+                <option value="Secondary 4" style={{ background: '#1a1a2e' }}>Secondary 4</option>
+                <option value="Secondary 5" style={{ background: '#1a1a2e' }}>Secondary 5</option>
+              </select>
+            </div>
+
+            {/* Class */}
+            <div>
+              <label style={{
+                display: 'block',
+                color: '#FFD700',
+                fontSize: '1rem',
+                fontWeight: '600',
+                marginBottom: '12px',
+                letterSpacing: '0.5px',
+              }}>
+                Class *
+              </label>
+              <input
+                type="text"
+                value={formData.class}
+                onChange={(e) => handleInputChange('class', e.target.value)}
+                placeholder="e.g., 4A, 5C"
+                required
+                style={{
+                  width: '100%',
+                  padding: '15px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  color: '#ffffff',
+                  fontSize: '1rem',
+                  fontFamily: '"Poppins", sans-serif',
+                  transition: 'all 0.3s ease',
+                  outline: 'none',
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.border = `2px solid ${labColor}`;
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                }}
+              />
+            </div>
+
+            {/* Subject */}
+            <div>
+              <label style={{
+                display: 'block',
+                color: '#FFD700',
+                fontSize: '1rem',
+                fontWeight: '600',
+                marginBottom: '12px',
+                letterSpacing: '0.5px',
+              }}>
+                Subject *
+              </label>
+              <select
+                value={formData.subject}
+                onChange={(e) => handleInputChange('subject', e.target.value)}
+                required
+                style={{
+                  width: '100%',
+                  padding: '15px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  color: formData.subject ? '#ffffff' : '#a0a0c0',
+                  fontSize: '1rem',
+                  fontFamily: '"Poppins", sans-serif',
+                  transition: 'all 0.3s ease',
+                  outline: 'none',
+                  cursor: 'pointer',
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.border = `2px solid ${labColor}`;
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                }}
+              >
+                <option value="">Select subject</option>
+                <option value="Pure Physics" style={{ background: '#1a1a2e' }}>Pure Physics</option>
+                <option value="Science Physics" style={{ background: '#1a1a2e' }}>Science Physics</option>
+                <option value="Pure Chemistry" style={{ background: '#1a1a2e' }}>Pure Chemistry</option>
+                <option value="Science Chemistry" style={{ background: '#1a1a2e' }}>Science Chemistry</option>
+                <option value="Pure Biology" style={{ background: '#1a1a2e' }}>Pure Biology</option>
+                <option value="Science Biology" style={{ background: '#1a1a2e' }}>Science Biology</option>
+                <option value="Lower Secondary Science" style={{ background: '#1a1a2e' }}>Lower Secondary Science</option>
+                <option value="Upper Secondary Science" style={{ background: '#1a1a2e' }}>Upper Secondary Science</option>
+              </select>
             </div>
           </div>
 

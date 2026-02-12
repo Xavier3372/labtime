@@ -203,7 +203,7 @@ export default function mybookings() {
                       borderRadius: '15px',
                       padding: '25px',
                       backdropFilter: 'blur(20px)',
-                      border: `2px solid ${booking.approved ? '#4ECDC4' : '#FFA500'}`,
+                      border: `2px solid ${booking.approved === 'approved' ? '#4ECDC4' : booking.approved === 'rejected' ? '#FF6B6B' : '#FFA500'}`,
                       boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
                     }}
                   >
@@ -233,11 +233,11 @@ export default function mybookings() {
                       <div style={{
                         padding: '8px 16px',
                         borderRadius: '20px',
-                        background: booking.approved ? 'rgba(78, 205, 196, 0.2)' : 'rgba(255, 165, 0, 0.2)',
-                        border: `1px solid ${booking.approved ? '#4ECDC4' : '#FFA500'}`,
+                        background: booking.approved === 'approved' ? 'rgba(78, 205, 196, 0.2)' : booking.approved === 'rejected' ? 'rgba(255, 107, 107, 0.2)' : 'rgba(255, 165, 0, 0.2)',
+                        border: `1px solid ${booking.approved === 'approved' ? '#4ECDC4' : booking.approved === 'rejected' ? '#FF6B6B' : '#FFA500'}`,
                       }}>
                         <span style={{
-                          color: booking.approved ? '#4ECDC4' : '#FFA500',
+                          color: booking.approved === 'approved' ? '#4ECDC4' : booking.approved === 'rejected' ? '#FF6B6B' : '#FFA500',
                           fontSize: '0.85rem',
                           fontWeight: '600',
                           letterSpacing: '0.5px',
@@ -318,6 +318,111 @@ export default function mybookings() {
                           fontWeight: '600',
                         }}>
                           {booking.teacher}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p style={{
+                          color: '#a0a0c0',
+                          fontSize: '0.8rem',
+                          fontWeight: '600',
+                          marginBottom: '5px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
+                        }}>
+                          Lab
+                        </p>
+                        <p style={{
+                          color: '#ffffff',
+                          fontSize: '1rem',
+                          margin: 0,
+                          fontWeight: '600',
+                        }}>
+                          {booking.lab || '—'}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p style={{
+                          color: '#a0a0c0',
+                          fontSize: '0.8rem',
+                          fontWeight: '600',
+                          marginBottom: '5px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
+                        }}>
+                          Subject
+                        </p>
+                        <p style={{
+                          color: '#ffffff',
+                          fontSize: '1rem',
+                          margin: 0,
+                          fontWeight: '600',
+                        }}>
+                          {booking.subject || '—'}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p style={{
+                          color: '#a0a0c0',
+                          fontSize: '0.8rem',
+                          fontWeight: '600',
+                          marginBottom: '5px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
+                        }}>
+                          Level
+                        </p>
+                        <p style={{
+                          color: '#ffffff',
+                          fontSize: '1rem',
+                          margin: 0,
+                          fontWeight: '600',
+                        }}>
+                          {booking.level || '—'}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p style={{
+                          color: '#a0a0c0',
+                          fontSize: '0.8rem',
+                          fontWeight: '600',
+                          marginBottom: '5px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
+                        }}>
+                          Class
+                        </p>
+                        <p style={{
+                          color: '#ffffff',
+                          fontSize: '1rem',
+                          margin: 0,
+                          fontWeight: '600',
+                        }}>
+                          {booking.class || '—'}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p style={{
+                          color: '#a0a0c0',
+                          fontSize: '0.8rem',
+                          fontWeight: '600',
+                          marginBottom: '5px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
+                        }}>
+                          Students
+                        </p>
+                        <p style={{
+                          color: '#ffffff',
+                          fontSize: '1rem',
+                          margin: 0,
+                          fontWeight: '600',
+                        }}>
+                          {booking.numStudents || '—'}
                         </p>
                       </div>
                     </div>

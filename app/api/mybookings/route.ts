@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: process.env.GOOGLE_SHEET_ID,
-            range: 'Bookings!A2:J',
+            range: 'Bookings!A2:M',
         });
 
         const rows = response.data.values || [];
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
         };
 
         rows.forEach((row: any[]) => {
-            const [lab, date, startTime, endTime, title, teacher, email, userPhone, notes, approved] = row;
+            const [date, startTime, endTime, title, teacher, userPhone, numStudents, level, classVal, subject, notes, lab, approved] = row;
             
             if (!lab || !date) return; // Skip incomplete rows
             
@@ -55,11 +55,14 @@ export async function POST(req: Request) {
                     endTime: parseTimeFormat(endTime),
                     title: title || 'Booking',
                     teacher: teacher || 'TBD',
-                    email: email || '',
                     phone: userPhone,
+                    numStudents: numStudents || '',
+                    level: level || '',
+                    class: classVal || '',
+                    subject: subject || '',
                     notes: notes || '',
-                    approved: approved?.toString().toLowerCase() === 'true' || approved === true,
-                    approvalStatus: approved?.toString().toLowerCase() === 'true' || approved === true ? 'Approved' : 'Pending'
+                    approved: approved?.toString().toLowerCase() === 'approved' ? 'approved' : approved?.toString().toLowerCase() === 'rejected' ? 'rejected' : 'pending',
+                    approvalStatus: approved?.toString().toLowerCase() === 'approved' ? 'Approved' : approved?.toString().toLowerCase() === 'rejected' ? 'Rejected' : 'Pending'
                 });
             }
         });

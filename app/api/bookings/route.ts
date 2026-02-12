@@ -16,7 +16,7 @@ export async function GET() {
 
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: process.env.GOOGLE_SHEET_ID,
-            range: 'Bookings!A2:J',
+            range: 'Bookings!A2:M',
         });
 
         const rows = response.data.values || [];
@@ -34,11 +34,11 @@ export async function GET() {
         };
 
         rows.forEach((row: any[]) => {
-            const [lab, date, startTime, endTime, title, teacher, email, phone, notes, approved] = row;
+            const [date, startTime, endTime, title, teacher, phone, numStudents, level, classVal, subject, notes, lab, approved] = row;
             
             if (!lab || !date) return; // Skip incomplete rows
             
-            if (!approved || (approved.toString().toLowerCase() !== 'true' && approved !== true)) {
+            if (!approved || approved.toString().toLowerCase() !== 'approved') {
                 return;
             }
 
@@ -55,8 +55,11 @@ export async function GET() {
                 endTime: parseTimeFormat(endTime),
                 title: title || 'Booking',
                 instructor: teacher || 'TBD',
-                email: email || '',
                 phone: phone || '',
+                numStudents: numStudents || '',
+                level: level || '',
+                class: classVal || '',
+                subject: subject || '',
                 notes: notes || '',
                 approved: approved
             });

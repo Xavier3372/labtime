@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { FaChalkboardTeacher, FaRegCalendarAlt, FaRegClock } from 'react-icons/fa';
+import { IoMdPeople } from 'react-icons/io';
+import { MdOutlineClass } from 'react-icons/md';
 
 export default function Home() {
   const [selectedLab, setSelectedLab] = useState('Physics Lab 1');
@@ -91,6 +93,19 @@ export default function Home() {
     const hour = Math.floor(timeValue);
     const minutes = Math.round((timeValue % 1) * 60);
     return `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  };
+
+  const levelColors = {
+    'Secondary 1': '#4ECDC4',
+    'Secondary 2': '#45B7D1',
+    'Secondary 3': '#F7DC6F',
+    'Secondary 4': '#FF8C42',
+    'Secondary 5': '#E74C3C',
+  };
+
+  const getLevelColor = (booking) => {
+    if (!booking?.level) return '#888888';
+    return levelColors[booking.level] || '#888888';
   };
 
   // Fetch booking data from Google Sheets
@@ -409,6 +424,7 @@ export default function Home() {
                 {weekDates.map((date, index) => {
                   const booking = getBookingForSlot(date, hour);
                   const isStart = isBookingStart(date, hour);
+                  const slotColor = booking ? getLevelColor(booking) : null;
 
                   return (
                     <div
@@ -418,7 +434,7 @@ export default function Home() {
                         padding: '8px',
                         minHeight: '70px',
                         background: booking 
-                          ? `linear-gradient(135deg, ${selectedLabData.color}dd 0%, ${selectedLabData.color}bb 100%)`
+                          ? `linear-gradient(135deg, ${slotColor}dd 0%, ${slotColor}bb 100%)`
                           : 'rgba(255, 255, 255, 0.02)',
                         borderRadius: '8px',
                         border: booking ? 'none' : '1px solid rgba(255, 255, 255, 0.05)',
@@ -433,7 +449,7 @@ export default function Home() {
                         if (booking) {
                           e.currentTarget.style.transform = 'scale(1.03)';
                           e.currentTarget.style.zIndex = '10';
-                          e.currentTarget.style.boxShadow = `0 8px 30px ${selectedLabData.color}88`;
+                          e.currentTarget.style.boxShadow = `0 8px 30px ${slotColor}88`;
                         }
                       }}
                       onMouseLeave={(e) => {
@@ -485,7 +501,7 @@ export default function Home() {
           marginTop: '30px',
           display: 'flex',
           justifyContent: 'center',
-          gap: '30px',
+          gap: '20px',
           flexWrap: 'wrap',
         }}>
           <div style={{
@@ -504,21 +520,23 @@ export default function Home() {
             }} />
             Available
           </div>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            color: '#a0a0c0',
-            fontSize: '0.9rem',
-          }}>
-            <div style={{
-              width: '20px',
-              height: '20px',
-              background: `linear-gradient(135deg, ${selectedLabData.color}dd 0%, ${selectedLabData.color}bb 100%)`,
-              borderRadius: '5px',
-            }} />
-            Booked
-          </div>
+          {Object.entries(levelColors).map(([level, color]) => (
+            <div key={level} style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              color: '#a0a0c0',
+              fontSize: '0.9rem',
+            }}>
+              <div style={{
+                width: '20px',
+                height: '20px',
+                background: `linear-gradient(135deg, ${color}dd 0%, ${color}bb 100%)`,
+                borderRadius: '5px',
+              }} />
+              {level}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -752,6 +770,80 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+
+                  {/* Number of Students */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '15px',
+                  }}>
+                    <div style={{
+                      width: '50px',
+                      height: '50px',
+                      background: `${selectedLabData.color}22`,
+                      borderRadius: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.5rem',
+                      border: `2px solid ${selectedLabData.color}66`,
+                      color: selectedLabData.color,
+                    }}>
+                      <IoMdPeople size={28} />
+                    </div>
+                    <div>
+                      <div style={{
+                        color: '#a0a0c0',
+                        fontSize: '0.85rem',
+                        marginBottom: '4px',
+                      }}>
+                        Number of Students
+                      </div>
+                      <div style={{
+                        fontSize: '1.1rem',
+                        fontWeight: '600',
+                      }}>
+                        {selectedBooking.numStudents || '—'}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Class */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '15px',
+                  }}>
+                    <div style={{
+                      width: '50px',
+                      height: '50px',
+                      background: `${selectedLabData.color}22`,
+                      borderRadius: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.5rem',
+                      border: `2px solid ${selectedLabData.color}66`,
+                      color: selectedLabData.color,
+                    }}>
+                      <MdOutlineClass size={28} />
+                    </div>
+                    <div>
+                      <div style={{
+                        color: '#a0a0c0',
+                        fontSize: '0.85rem',
+                        marginBottom: '4px',
+                      }}>
+                        Class
+                      </div>
+                      <div style={{
+                        fontSize: '1.1rem',
+                        fontWeight: '600',
+                      }}>
+                        {selectedBooking.class || '—'}
+                      </div>
+                    </div>
+                  </div>
               </div>
 
               {/* Action Buttons */}

@@ -1,14 +1,16 @@
 import { google } from 'googleapis';
 
 type SheetForm = {
-    lab: string,
     date: string,
     startTime: string,
     endTime: string,
     title: string,
     teacher: string,
-    email: string,
     phone: string,
+    numStudents: string,
+    level: string,
+    class: string,
+    subject: string,
     notes: string,
 }
 
@@ -16,12 +18,11 @@ export async function POST(req: Request) {
     try {
         const body: SheetForm = await req.json();
         console.log('Form data received:', { 
-            lab: body.lab, 
-            email: body.email, 
+            phone: body.phone, 
             date: body.date 
         });
 
-        if (!body.lab || !body.date || !body.email || !body.phone) {
+        if (!body.date || !body.phone || !body.numStudents || !body.level || !body.class || !body.subject) {
             console.error('Missing required form fields');
             return Response.json({ 
                 message: 'Missing required form fields',
@@ -64,18 +65,20 @@ export async function POST(req: Request) {
         // Now update the new row with the booking data
         const response = await sheets.spreadsheets.values.update({
             spreadsheetId: process.env.GOOGLE_SHEET_ID,
-            range: 'Bookings!A2:I2',
+            range: 'Bookings!A2:K2',
             valueInputOption: 'USER_ENTERED',
             requestBody: { 
                 values: [[
-                    body.lab,
                     body.date,
                     body.startTime,
                     body.endTime,
                     body.title,
                     body.teacher,
-                    body.email,
                     body.phone,
+                    body.numStudents,
+                    body.level,
+                    body.class,
+                    body.subject,
                     body.notes
                 ]]
             }
