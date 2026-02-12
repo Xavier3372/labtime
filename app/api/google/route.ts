@@ -15,7 +15,7 @@ type SheetForm = {
 export async function POST(req: Request) {
     try {
         const body: SheetForm = await req.json();
-        console.log('📝 Form data received:', { 
+        console.log('Form data received:', { 
             lab: body.lab, 
             email: body.email, 
             date: body.date 
