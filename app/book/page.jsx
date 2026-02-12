@@ -40,7 +40,6 @@ export default function book() {
 
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
-    // Set your password here
     const correctPassword = 'science2026';
     
     if (passwordInput === correctPassword) {
