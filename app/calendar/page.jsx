@@ -5,7 +5,6 @@ import { IoMdPeople } from 'react-icons/io';
 import { MdOutlineClass } from 'react-icons/md';
 
 export default function Calendar() {
-  const [selectedLab, setSelectedLab] = useState('Physics Lab 1');
   const [bookings, setBookings] = useState({});
   const [currentWeekOffset, setCurrentWeekOffset] = useState(0);
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -21,18 +20,16 @@ export default function Calendar() {
     setTimeout(() => setSelectedBooking(null), 300);
   };
   
-  // Get the Monday of the current week
   const getMondayOfWeek = (offset = 0) => {
     const today = new Date();
     const dayOfWeek = today.getDay();
-    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Adjust if Sunday
+    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
     const monday = new Date(today);
     monday.setDate(today.getDate() + diff + (offset * 7));
     monday.setHours(0, 0, 0, 0);
     return monday;
   };
 
-  // Get array of dates for the week
   const getWeekDates = () => {
     const monday = getMondayOfWeek(currentWeekOffset);
     return Array.from({ length: 5 }, (_, i) => {
@@ -57,17 +54,9 @@ export default function Calendar() {
     return `${start} - ${end}, ${year}`;
   };
 
-  const goToPreviousWeek = () => {
-    setCurrentWeekOffset(currentWeekOffset - 1);
-  };
-
-  const goToNextWeek = () => {
-    setCurrentWeekOffset(currentWeekOffset + 1);
-  };
-
-  const goToCurrentWeek = () => {
-    setCurrentWeekOffset(0);
-  };
+  const goToPreviousWeek = () => setCurrentWeekOffset(currentWeekOffset - 1);
+  const goToNextWeek = () => setCurrentWeekOffset(currentWeekOffset + 1);
+  const goToCurrentWeek = () => setCurrentWeekOffset(0);
   
   const labs = [
     { name: 'Physics Lab 1', color: '#FF6B6B', category: 'Physics' },
@@ -77,13 +66,6 @@ export default function Calendar() {
     { name: 'Biology Lab 1', color: '#95E1D3', category: 'Biology' },
     { name: 'Biology Lab 2', color: '#B8F4E8', category: 'Biology' },
   ];
-
-  // 30-minute intervals from 7 AM to 5 PM (20 slots)
-  const hours = Array.from({ length: 20 }, (_, i) => {
-    const hour = Math.floor(i / 2) + 7;
-    const minutes = (i % 2) * 30;
-    return hour + minutes / 60;
-  });
   
   const getDayName = (date) => {
     return date.toLocaleDateString('en-US', { weekday: 'long' });
@@ -108,7 +90,6 @@ export default function Calendar() {
     return levelColors[booking.level] || '#888888';
   };
 
-  // Fetch booking data from Google Sheets
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -116,7 +97,6 @@ export default function Calendar() {
         if (response.ok) {
           const data = await response.json();
           setBookings(data);
-          console.log('Bookings loaded from Google Sheets');
         } else {
           console.error('Failed to fetch bookings');
         }
@@ -124,7 +104,6 @@ export default function Calendar() {
         console.error('Error fetching bookings:', error);
       }
     };
-
     fetchBookings();
   }, []);
 
@@ -135,24 +114,24 @@ export default function Calendar() {
     return `${year}-${month}-${day}`;
   };
 
-  const getBookingsForDate = (date) => {
+  // Get bookings for a specific lab and date, sorted by start time
+  const getLabBookingsForDate = (labName, date) => {
     const dateKey = getDateKey(date);
-    return bookings[selectedLab]?.[dateKey] || [];
+    const labBookings = bookings[labName]?.[dateKey] || [];
+    const seen = new Set();
+    const unique = [];
+    for (const booking of labBookings) {
+      const key = `${booking.startTime}-${booking.title}-${booking.instructor}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        unique.push(booking);
+      }
+    }
+    unique.sort((a, b) => a.startTime - b.startTime);
+    return unique;
   };
 
-  const getBookingForSlot = (date, hour) => {
-    const dayBookings = getBookingsForDate(date);
-    return dayBookings.find(
-      booking => hour >= booking.startTime && hour < booking.endTime
-    );
-  };
-
-  const isBookingStart = (date, hour) => {
-    const dayBookings = getBookingsForDate(date);
-    return dayBookings.some(booking => booking.startTime === hour);
-  };
-
-  const selectedLabData = labs.find(lab => lab.name === selectedLab);
+  const getLabData = (labName) => labs.find(lab => lab.name === labName);
 
   return (
     <div style={{
@@ -192,51 +171,6 @@ export default function Calendar() {
           }}>
             Schedule and manage your lab sessions
           </p>
-        </div>
-
-        {/* Lab Selector */}
-        <div style={{
-          display: 'flex',
-          gap: '15px',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          marginBottom: '40px',
-        }}>
-          {labs.map((lab) => (
-            <button
-              key={lab.name}
-              onClick={() => setSelectedLab(lab.name)}
-              style={{
-                padding: '15px 30px',
-                border: selectedLab === lab.name ? `3px solid ${lab.color}` : '3px solid transparent',
-                borderRadius: '15px',
-                background: selectedLab === lab.name 
-                  ? `linear-gradient(135deg, ${lab.color}22 0%, ${lab.color}11 100%)`
-                  : 'rgba(255, 255, 255, 0.05)',
-                color: selectedLab === lab.name ? lab.color : '#ffffff',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                fontWeight: '600',
-                transition: 'all 0.3s ease',
-                backdropFilter: 'blur(10px)',
-                boxShadow: selectedLab === lab.name 
-                  ? `0 8px 32px ${lab.color}44` 
-                  : '0 4px 16px rgba(0, 0, 0, 0.2)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-3px)';
-                e.currentTarget.style.boxShadow = `0 12px 40px ${lab.color}66`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = selectedLab === lab.name 
-                  ? `0 8px 32px ${lab.color}44` 
-                  : '0 4px 16px rgba(0, 0, 0, 0.2)';
-              }}
-            >
-              {lab.name}
-            </button>
-          ))}
         </div>
 
         {/* Week Navigation */}
@@ -351,143 +285,162 @@ export default function Calendar() {
           </button>
         </div>
 
-        {/* Calendar Grid */}
+        {/* Calendar Grid - Labs as Rows, Days as Columns */}
         <div style={{
           background: 'rgba(255, 255, 255, 0.03)',
           borderRadius: '25px',
-          padding: '30px',
+          padding: '25px',
           backdropFilter: 'blur(20px)',
           border: '1px solid rgba(255, 255, 255, 0.1)',
           boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
+          overflowX: 'auto',
         }}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: '100px repeat(5, 1fr)',
-            gap: '2px',
-            overflow: 'auto',
+            gridTemplateColumns: '160px repeat(5, 1fr)',
+            gap: '8px',
+            minWidth: '900px',
           }}>
             {/* Header Row */}
             <div style={{
-              padding: '15px',
-              fontWeight: '600',
+              padding: '12px',
+              fontWeight: '700',
               color: '#FFD700',
               fontSize: '0.9rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
-              Time
+              Lab
             </div>
             {weekDates.map((date, index) => (
               <div
                 key={index}
                 style={{
-                  padding: '15px 10px',
+                  padding: '12px 8px',
                   textAlign: 'center',
                   fontWeight: '700',
                   color: '#FFD700',
                   background: 'rgba(255, 215, 0, 0.1)',
                   borderRadius: '10px',
-                  fontSize: '1rem',
-                  letterSpacing: '1px',
+                  fontSize: '0.95rem',
+                  letterSpacing: '0.5px',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '4px',
+                  gap: '2px',
                 }}
               >
                 <div>{getDayName(date)}</div>
                 <div style={{
-                  fontSize: '0.85rem',
+                  fontSize: '0.8rem',
                   fontWeight: '500',
                   color: '#FFA500',
-                  letterSpacing: '0.5px',
                 }}>
                   {formatDate(date)}
                 </div>
               </div>
             ))}
 
-            {/* Time Slots */}
-            {hours.map((hour) => (
+            {/* Lab Rows */}
+            {labs.map((lab) => (
               <>
+                {/* Lab Name Cell */}
                 <div
-                  key={`time-${hour}`}
+                  key={`label-${lab.name}`}
                   style={{
-                    padding: '15px',
+                    padding: '15px 12px',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: '600',
-                    color: '#a0a0c0',
-                    fontSize: '0.85rem',
+                    gap: '10px',
+                    borderRadius: '10px',
+                    background: `${lab.color}11`,
+                    border: `1px solid ${lab.color}33`,
                   }}
                 >
-                  {formatTime(hour)}
+                  <div style={{
+                    width: '10px',
+                    height: '10px',
+                    borderRadius: '50%',
+                    background: lab.color,
+                    flexShrink: 0,
+                  }} />
+                  <span style={{
+                    color: lab.color,
+                    fontWeight: '600',
+                    fontSize: '0.85rem',
+                    lineHeight: '1.2',
+                  }}>
+                    {lab.name}
+                  </span>
                 </div>
-                {weekDates.map((date, index) => {
-                  const booking = getBookingForSlot(date, hour);
-                  const isStart = isBookingStart(date, hour);
-                  const slotColor = booking ? getLevelColor(booking) : null;
 
+                {/* Day Cells for this Lab */}
+                {weekDates.map((date, dayIndex) => {
+                  const dayBookings = getLabBookingsForDate(lab.name, date);
                   return (
                     <div
-                      key={`${index}-${hour}`}
-                      onClick={() => booking && isStart && openBookingModal(booking, date)}
+                      key={`${lab.name}-${dayIndex}`}
                       style={{
                         padding: '8px',
-                        minHeight: '70px',
-                        background: booking 
-                          ? `linear-gradient(135deg, ${slotColor}dd 0%, ${slotColor}bb 100%)`
-                          : 'rgba(255, 255, 255, 0.02)',
-                        borderRadius: '8px',
-                        border: booking ? 'none' : '1px solid rgba(255, 255, 255, 0.05)',
-                        position: 'relative',
-                        cursor: booking ? 'pointer' : 'default',
-                        transition: 'all 0.3s ease',
+                        borderRadius: '10px',
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                        minHeight: '80px',
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'center',
-                      }}
-                      onMouseEnter={(e) => {
-                        if (booking) {
-                          e.currentTarget.style.transform = 'scale(1.03)';
-                          e.currentTarget.style.zIndex = '10';
-                          e.currentTarget.style.boxShadow = `0 8px 30px ${slotColor}88`;
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (booking) {
-                          e.currentTarget.style.transform = 'scale(1)';
-                          e.currentTarget.style.zIndex = '1';
-                          e.currentTarget.style.boxShadow = 'none';
-                        }
+                        gap: '6px',
                       }}
                     >
-                      {booking && isStart && (
-                        <div>
-                          <div style={{
-                            color: '#ffffff',
-                            fontWeight: '700',
-                            fontSize: '0.9rem',
-                            marginBottom: '4px',
-                            lineHeight: '1.2',
-                          }}>
-                            {booking.title}
-                          </div>
-                          <div style={{
-                            color: 'rgba(255, 255, 255, 0.85)',
-                            fontSize: '0.75rem',
-                            fontWeight: '400',
-                          }}>
-                            {booking.instructor}
-                          </div>
-                          <div style={{
-                            color: 'rgba(255, 255, 255, 0.7)',
-                            fontSize: '0.7rem',
-                            marginTop: '4px',
-                            fontWeight: '600',
-                          }}>
-                            {formatTime(booking.startTime)} - {formatTime(booking.endTime)}
-                          </div>
-                        </div>
-                      )}
+                      {dayBookings.length > 0 ? (
+                        dayBookings.map((booking, bIndex) => {
+                          const levelColor = getLevelColor(booking);
+                          return (
+                            <div
+                              key={bIndex}
+                              onClick={() => openBookingModal({ ...booking, labName: lab.name }, date)}
+                              style={{
+                                padding: '8px 10px',
+                                background: `linear-gradient(135deg, ${levelColor}22 0%, ${levelColor}11 100%)`,
+                                borderRadius: '8px',
+                                border: `1px solid ${levelColor}44`,
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'translateY(-1px)';
+                                e.currentTarget.style.boxShadow = `0 4px 12px ${levelColor}44`;
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.boxShadow = 'none';
+                              }}
+                            >
+                              <div style={{
+                                color: levelColor,
+                                fontSize: '0.65rem',
+                                fontWeight: '700',
+                                marginBottom: '2px',
+                              }}>
+                                {formatTime(booking.startTime)} – {formatTime(booking.endTime)}
+                              </div>
+                              <div style={{
+                                color: '#ffffff',
+                                fontWeight: '600',
+                                fontSize: '0.75rem',
+                                lineHeight: '1.2',
+                              }}>
+                                {booking.title}
+                              </div>
+                              <div style={{
+                                color: 'rgba(255, 255, 255, 0.6)',
+                                fontSize: '0.65rem',
+                              }}>
+                                {booking.instructor}
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : null}
                     </div>
                   );
                 })}
@@ -504,22 +457,6 @@ export default function Calendar() {
           gap: '20px',
           flexWrap: 'wrap',
         }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            color: '#a0a0c0',
-            fontSize: '0.9rem',
-          }}>
-            <div style={{
-              width: '20px',
-              height: '20px',
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: '5px',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-            }} />
-            Available
-          </div>
           {Object.entries(levelColors).map(([level, color]) => (
             <div key={level} style={{
               display: 'flex',
@@ -538,325 +475,219 @@ export default function Calendar() {
             </div>
           ))}
         </div>
+
       </div>
 
       {/* Booking Details Modal */}
-      {isModalOpen && selectedBooking && (
-        <div
-          onClick={closeBookingModal}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(0, 0, 0, 0.8)',
-            backdropFilter: 'blur(5px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            padding: '20px',
-            animation: 'fadeIn 0.3s ease',
-          }}
-        >
-          <style>
-            {`
-              @keyframes fadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-              }
-              @keyframes slideUp {
-                from { 
-                  opacity: 0;
-                  transform: translateY(30px) scale(0.95);
-                }
-                to { 
-                  opacity: 1;
-                  transform: translateY(0) scale(1);
-                }
-              }
-            `}
-          </style>
+      {isModalOpen && selectedBooking && (() => {
+        const modalLabData = getLabData(selectedBooking.labName);
+        const modalLabColor = modalLabData?.color || '#888888';
+        return (
           <div
-            onClick={(e) => e.stopPropagation()}
+            onClick={closeBookingModal}
             style={{
-              background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-              borderRadius: '25px',
-              padding: '40px',
-              maxWidth: '600px',
-              width: '100%',
-              border: `2px solid ${selectedLabData.color}`,
-              boxShadow: `0 20px 60px ${selectedLabData.color}44`,
-              animation: 'slideUp 0.3s ease',
-              position: 'relative',
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0, 0, 0, 0.8)',
+              backdropFilter: 'blur(5px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+              padding: '20px',
+              animation: 'fadeIn 0.3s ease',
             }}
           >
-            {/* Close Button */}
-            <button
-              onClick={closeBookingModal}
+            <style>
+              {`
+                @keyframes fadeIn {
+                  from { opacity: 0; }
+                  to { opacity: 1; }
+                }
+                @keyframes slideUp {
+                  from { 
+                    opacity: 0;
+                    transform: translateY(30px) scale(0.95);
+                  }
+                  to { 
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                  }
+                }
+              `}
+            </style>
+            <div
+              onClick={(e) => e.stopPropagation()}
               style={{
-                position: 'absolute',
-                top: '20px',
-                right: '20px',
-                background: 'rgba(255, 255, 255, 0.1)',
-                border: 'none',
-                borderRadius: '50%',
-                width: '40px',
-                height: '40px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                color: '#ffffff',
-                fontSize: '1.5rem',
-                transition: 'all 0.3s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
-                e.currentTarget.style.transform = 'rotate(90deg)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                e.currentTarget.style.transform = 'rotate(0deg)';
+                background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+                borderRadius: '25px',
+                padding: '40px',
+                maxWidth: '600px',
+                width: '100%',
+                border: `2px solid ${modalLabColor}`,
+                boxShadow: `0 20px 60px ${modalLabColor}44`,
+                animation: 'slideUp 0.3s ease',
+                position: 'relative',
               }}
             >
-              ×
-            </button>
-
-            {/* Modal Content */}
-            <div style={{
-              color: '#ffffff',
-            }}>
-              <div style={{
-                display: 'inline-block',
-                padding: '8px 16px',
-                background: `${selectedLabData.color}33`,
-                borderRadius: '20px',
-                color: selectedLabData.color,
-                fontSize: '0.9rem',
-                fontWeight: '600',
-                marginBottom: '20px',
-                border: `1px solid ${selectedLabData.color}66`,
-              }}>
-                {selectedLab}
-              </div>
-
-              <h2 style={{
-                fontFamily: '"Playfair Display", serif',
-                fontSize: '2.5rem',
-                marginBottom: '10px',
-                color: '#FFD700',
-                fontWeight: '700',
-              }}>
-                {selectedBooking.title}
-              </h2>
-
-              <div style={{
-                height: '2px',
-                background: `linear-gradient(90deg, ${selectedLabData.color} 0%, transparent 100%)`,
-                marginBottom: '30px',
-              }} />
-
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '20px',
-              }}>
-                <div style={{
+              {/* Close Button */}
+              <button
+                onClick={closeBookingModal}
+                style={{
+                  position: 'absolute',
+                  top: '20px',
+                  right: '20px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '40px',
+                  height: '40px',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '15px',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: '#ffffff',
+                  fontSize: '1.5rem',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                  e.currentTarget.style.transform = 'rotate(90deg)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.transform = 'rotate(0deg)';
+                }}
+              >
+                ×
+              </button>
+
+              {/* Modal Content */}
+              <div style={{ color: '#ffffff' }}>
+                <div style={{
+                  display: 'inline-block',
+                  padding: '8px 16px',
+                  background: `${modalLabColor}33`,
+                  borderRadius: '20px',
+                  color: modalLabColor,
+                  fontSize: '0.9rem',
+                  fontWeight: '600',
+                  marginBottom: '20px',
+                  border: `1px solid ${modalLabColor}66`,
                 }}>
-                  <div style={{
-                    width: '50px',
-                    height: '50px',
-                    background: `${selectedLabData.color}22`,
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.5rem',
-                    border: `2px solid ${selectedLabData.color}66`,
-                    color: selectedLabData.color,
-                  }}>
-                    <FaChalkboardTeacher size={24} />
-                  </div>
-                  <div>
-                    <div style={{
-                      color: '#a0a0c0',
-                      fontSize: '0.85rem',
-                      marginBottom: '4px',
-                    }}>
-                      Teacher
-                    </div>
-                    <div style={{
-                      fontSize: '1.1rem',
-                      fontWeight: '600',
-                    }}>
-                      {selectedBooking.instructor}
-                    </div>
-                  </div>
+                  {selectedBooking.labName}
                 </div>
+
+                <h2 style={{
+                  fontFamily: '"Playfair Display", serif',
+                  fontSize: '2.5rem',
+                  marginBottom: '10px',
+                  color: '#FFD700',
+                  fontWeight: '700',
+                }}>
+                  {selectedBooking.title}
+                </h2>
+
+                <div style={{
+                  height: '2px',
+                  background: `linear-gradient(90deg, ${modalLabColor} 0%, transparent 100%)`,
+                  marginBottom: '30px',
+                }} />
 
                 <div style={{
                   display: 'flex',
-                  alignItems: 'center',
-                  gap: '15px',
+                  flexDirection: 'column',
+                  gap: '20px',
                 }}>
-                  <div style={{
-                    width: '50px',
-                    height: '50px',
-                    background: `${selectedLabData.color}22`,
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.5rem',
-                    border: `2px solid ${selectedLabData.color}66`,
-                    color: selectedLabData.color,
-                  }}>
-                    <FaRegCalendarAlt size={24} />
-                  </div>
-                  <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <div style={{
-                      color: '#a0a0c0',
-                      fontSize: '0.85rem',
-                      marginBottom: '4px',
+                      width: '50px', height: '50px',
+                      background: `${modalLabColor}22`, borderRadius: '12px',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '1.5rem', border: `2px solid ${modalLabColor}66`, color: modalLabColor,
                     }}>
-                      Date & Day
+                      <FaChalkboardTeacher size={24} />
                     </div>
-                    <div style={{
-                      fontSize: '1.1rem',
-                      fontWeight: '600',
-                    }}>
-                      {getDayName(selectedBooking.date)}, {formatDate(selectedBooking.date)}
+                    <div>
+                      <div style={{ color: '#a0a0c0', fontSize: '0.85rem', marginBottom: '4px' }}>Teacher</div>
+                      <div style={{ fontSize: '1.1rem', fontWeight: '600' }}>{selectedBooking.instructor}</div>
                     </div>
                   </div>
-                </div>
 
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '15px',
-                }}>
-                  <div style={{
-                    width: '50px',
-                    height: '50px',
-                    background: `${selectedLabData.color}22`,
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.5rem',
-                    border: `2px solid ${selectedLabData.color}66`,
-                    color: selectedLabData.color,
-                  }}>
-                    <FaRegClock size={28} />
-                  </div>
-                  <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <div style={{
-                      color: '#a0a0c0',
-                      fontSize: '0.85rem',
-                      marginBottom: '4px',
+                      width: '50px', height: '50px',
+                      background: `${modalLabColor}22`, borderRadius: '12px',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '1.5rem', border: `2px solid ${modalLabColor}66`, color: modalLabColor,
                     }}>
-                      Time
+                      <FaRegCalendarAlt size={24} />
                     </div>
-                    <div style={{
-                      fontSize: '1.1rem',
-                      fontWeight: '600',
-                    }}>
-                      {formatTime(selectedBooking.startTime)} - {formatTime(selectedBooking.endTime)}
+                    <div>
+                      <div style={{ color: '#a0a0c0', fontSize: '0.85rem', marginBottom: '4px' }}>Date & Day</div>
+                      <div style={{ fontSize: '1.1rem', fontWeight: '600' }}>
+                        {getDayName(selectedBooking.date)}, {formatDate(selectedBooking.date)}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                  {/* Number of Students */}
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '15px',
-                  }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <div style={{
-                      width: '50px',
-                      height: '50px',
-                      background: `${selectedLabData.color}22`,
-                      borderRadius: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '1.5rem',
-                      border: `2px solid ${selectedLabData.color}66`,
-                      color: selectedLabData.color,
+                      width: '50px', height: '50px',
+                      background: `${modalLabColor}22`, borderRadius: '12px',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '1.5rem', border: `2px solid ${modalLabColor}66`, color: modalLabColor,
+                    }}>
+                      <FaRegClock size={28} />
+                    </div>
+                    <div>
+                      <div style={{ color: '#a0a0c0', fontSize: '0.85rem', marginBottom: '4px' }}>Time</div>
+                      <div style={{ fontSize: '1.1rem', fontWeight: '600' }}>
+                        {formatTime(selectedBooking.startTime)} - {formatTime(selectedBooking.endTime)}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <div style={{
+                      width: '50px', height: '50px',
+                      background: `${modalLabColor}22`, borderRadius: '12px',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '1.5rem', border: `2px solid ${modalLabColor}66`, color: modalLabColor,
                     }}>
                       <IoMdPeople size={28} />
                     </div>
                     <div>
-                      <div style={{
-                        color: '#a0a0c0',
-                        fontSize: '0.85rem',
-                        marginBottom: '4px',
-                      }}>
-                        Number of Students
-                      </div>
-                      <div style={{
-                        fontSize: '1.1rem',
-                        fontWeight: '600',
-                      }}>
-                        {selectedBooking.numStudents || '—'}
-                      </div>
+                      <div style={{ color: '#a0a0c0', fontSize: '0.85rem', marginBottom: '4px' }}>Number of Students</div>
+                      <div style={{ fontSize: '1.1rem', fontWeight: '600' }}>{selectedBooking.numStudents || '—'}</div>
                     </div>
                   </div>
 
-                  {/* Class */}
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '15px',
-                  }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <div style={{
-                      width: '50px',
-                      height: '50px',
-                      background: `${selectedLabData.color}22`,
-                      borderRadius: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '1.5rem',
-                      border: `2px solid ${selectedLabData.color}66`,
-                      color: selectedLabData.color,
+                      width: '50px', height: '50px',
+                      background: `${modalLabColor}22`, borderRadius: '12px',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '1.5rem', border: `2px solid ${modalLabColor}66`, color: modalLabColor,
                     }}>
                       <MdOutlineClass size={28} />
                     </div>
                     <div>
-                      <div style={{
-                        color: '#a0a0c0',
-                        fontSize: '0.85rem',
-                        marginBottom: '4px',
-                      }}>
-                        Class
-                      </div>
-                      <div style={{
-                        fontSize: '1.1rem',
-                        fontWeight: '600',
-                      }}>
-                        {selectedBooking.class || '—'}
-                      </div>
+                      <div style={{ color: '#a0a0c0', fontSize: '0.85rem', marginBottom: '4px' }}>Class</div>
+                      <div style={{ fontSize: '1.1rem', fontWeight: '600' }}>{selectedBooking.class || '—'}</div>
                     </div>
                   </div>
-              </div>
+                </div>
 
-              {/* Action Buttons */}
-              <div style={{
-                display: 'flex',
-                gap: '15px',
-                marginTop: '35px',
-              }}>
+                <div style={{ display: 'flex', gap: '15px', marginTop: '35px' }}></div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 }
