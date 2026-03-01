@@ -9,6 +9,7 @@ export default function Calendar() {
   const [currentWeekOffset, setCurrentWeekOffset] = useState(0);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [weeksData, setWeeksData] = useState({});
   
   const openBookingModal = (booking, date) => {
     setSelectedBooking({ ...booking, date });
@@ -104,7 +105,21 @@ export default function Calendar() {
         console.error('Error fetching bookings:', error);
       }
     };
+    const fetchWeeks = async () => {
+      try {
+        const response = await fetch('/api/weeks');
+        if (response.ok) {
+          const data = await response.json();
+          setWeeksData(data);
+        } else {
+          console.error('Failed to fetch weeks data');
+        }
+      } catch (error) {
+        console.error('Error fetching weeks:', error);
+      }
+    };
     fetchBookings();
+    fetchWeeks();
   }, []);
 
   const getDateKey = (date) => {
@@ -112,6 +127,12 @@ export default function Calendar() {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
+  };
+
+  const getWeekLabel = () => {
+    const monday = getMondayOfWeek(currentWeekOffset);
+    const mondayKey = getDateKey(monday);
+    return weeksData[mondayKey] || null;
   };
 
   // Get bookings for a specific lab and date, sorted by start time
@@ -223,7 +244,7 @@ export default function Calendar() {
             backdropFilter: 'blur(10px)',
             letterSpacing: '0.5px',
           }}>
-            {formatWeekRange()}
+            {getWeekLabel() || formatWeekRange()}
           </div>
 
           {currentWeekOffset !== 0 && (
