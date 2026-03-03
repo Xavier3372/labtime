@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 
 export default function book() {
@@ -21,6 +21,41 @@ export default function book() {
   const [passwordInput, setPasswordInput] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passwordError, setPasswordError] = useState('');
+
+  // set allowed booking dates
+  const allowedDates = useMemo(() => {
+    const dates = [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    let current = new Date(today);
+    let skipped = 0;
+
+    // skip days
+    while (skipped < 2) {
+      if (current.getDay() >= 1 && current.getDay() <= 5) {
+        skipped++;
+      }
+      current.setDate(current.getDate() + 1);
+    }
+
+    while (dates.length < 5) {
+      if (current.getDay() >= 1 && current.getDay() <= 5) {
+        const yyyy = current.getFullYear();
+        const mm = String(current.getMonth() + 1).padStart(2, '0');
+        const dd = String(current.getDate()).padStart(2, '0');
+        const dayName = current.toLocaleDateString('en-US', { weekday: 'short' });
+        const monthName = current.toLocaleDateString('en-US', { month: 'short' });
+        dates.push({
+          value: `${yyyy}-${mm}-${dd}`,
+          label: `${dayName}, ${dd} ${monthName} ${yyyy}`,
+        });
+      }
+      current.setDate(current.getDate() + 1);
+    }
+
+    return dates;
+  }, []);
 
   const labs = [
     { name: 'Physics Lab 1', color: '#FF6B6B', category: 'Physics' },
@@ -70,7 +105,7 @@ export default function book() {
     e.preventDefault();
     
     try {
-      // Format times before sending
+      // format time
       const formDataToSend = {
         ...formData,
         startTime: formatTimeForSheet(formData.startTime),
@@ -101,7 +136,7 @@ export default function book() {
 
     setTimeout(() => {
       setShowConfirmation(false);
-      // Reset form
+      // clear form
       setFormData({
         date: '',
         startTime: '',
@@ -130,7 +165,7 @@ export default function book() {
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
       
       {!isAuthenticated ? (
-        // Password Modal
+        // password entry
         <div style={{
           minHeight: '100vh',
           display: 'flex',
@@ -248,7 +283,7 @@ export default function book() {
           </div>
         </div>
       ) : (
-        // Booking Form Content
+        // form content
         <>
         <div style={{
           maxWidth: '900px',
@@ -311,8 +346,7 @@ export default function book() {
               }}>
                 Date *
               </label>
-              <input
-                type="date"
+              <select
                 value={formData.date}
                 onChange={(e) => handleInputChange('date', e.target.value)}
                 required
@@ -322,11 +356,12 @@ export default function book() {
                   background: 'rgba(255, 255, 255, 0.05)',
                   border: '2px solid rgba(255, 255, 255, 0.1)',
                   borderRadius: '12px',
-                  color: '#ffffff',
+                  color: formData.date ? '#ffffff' : '#a0a0c0',
                   fontSize: '1rem',
                   fontFamily: '"Poppins", sans-serif',
                   transition: 'all 0.3s ease',
                   outline: 'none',
+                  cursor: 'pointer',
                 }}
                 onFocus={(e) => {
                   e.currentTarget.style.border = `2px solid ${labColor}`;
@@ -336,7 +371,14 @@ export default function book() {
                   e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
                   e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
                 }}
-              />
+              >
+                <option value="">Select date</option>
+                {allowedDates.map((d) => (
+                  <option key={d.value} value={d.value} style={{ background: '#1a1a2e' }}>
+                    {d.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Start Time */}
@@ -565,7 +607,6 @@ export default function book() {
             </div>
           </div>
 
-          {/* Number of Students, Level, and Class Row */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
