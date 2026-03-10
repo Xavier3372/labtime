@@ -29,6 +29,32 @@ export async function POST(req: Request) {
             }, { status: 400 });
         }
 
+        // Validate booking date is a working day (Mon-Fri) and at least 5 working days in advance
+        const bookingDate = new Date(body.date + 'T00:00:00');
+        const dayOfWeek = bookingDate.getDay();
+        if (dayOfWeek === 0 || dayOfWeek === 6) {
+            return Response.json({ 
+                message: 'Bookings can only be made on working days (Monday to Friday)',
+            }, { status: 400 });
+        }
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        let workingDays = 0;
+        const checkDate = new Date(today);
+        while (checkDate < bookingDate) {
+            checkDate.setDate(checkDate.getDate() + 1);
+            const d = checkDate.getDay();
+            if (d >= 1 && d <= 5) {
+                workingDays++;
+            }
+        }
+        if (workingDays < 5) {
+            return Response.json({ 
+                message: 'Bookings must be made at least 5 working days in advance',
+            }, { status: 400 });
+        }
+
         const auth = new google.auth.GoogleAuth({
             credentials: {
                 client_email: process.env.GOOGLE_CLIENT_EMAIL,

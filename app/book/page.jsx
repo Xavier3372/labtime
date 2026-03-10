@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 
 
 export default function book() {
@@ -21,41 +21,79 @@ export default function book() {
   const [passwordInput, setPasswordInput] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passwordError, setPasswordError] = useState('');
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [calendarMonth, setCalendarMonth] = useState(() => {
+    const d = new Date();
+    return new Date(d.getFullYear(), d.getMonth(), 1);
+  });
+  const calendarRef = useRef(null);
 
-  // set allowed booking dates
-  const allowedDates = useMemo(() => {
-    const dates = [];
+  // Close calendar on outside click
+  useEffect(() => {
+    const handler = (e) => {
+      if (calendarRef.current && !calendarRef.current.contains(e.target)) {
+        setShowCalendar(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  // Compute the minimum bookable date (5 working days from today)
+  const minBookableDate = useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
     let current = new Date(today);
     let skipped = 0;
-
-    // skip days
-    while (skipped < 2) {
+    while (skipped < 5) {
+      current.setDate(current.getDate() + 1);
       if (current.getDay() >= 1 && current.getDay() <= 5) {
         skipped++;
       }
-      current.setDate(current.getDate() + 1);
     }
-
-    while (dates.length < 5) {
-      if (current.getDay() >= 1 && current.getDay() <= 5) {
-        const yyyy = current.getFullYear();
-        const mm = String(current.getMonth() + 1).padStart(2, '0');
-        const dd = String(current.getDate()).padStart(2, '0');
-        const dayName = current.toLocaleDateString('en-US', { weekday: 'short' });
-        const monthName = current.toLocaleDateString('en-US', { month: 'short' });
-        dates.push({
-          value: `${yyyy}-${mm}-${dd}`,
-          label: `${dayName}, ${dd} ${monthName} ${yyyy}`,
-        });
-      }
-      current.setDate(current.getDate() + 1);
-    }
-
-    return dates;
+    return current;
   }, []);
+
+  // Check if a date is a valid bookable working day
+  const isDateBookable = useCallback((date) => {
+    const day = date.getDay();
+    if (day === 0 || day === 6) return false; // weekend
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    return d >= minBookableDate;
+  }, [minBookableDate]);
+
+  // Generate calendar grid for a given month
+  const calendarDays = useMemo(() => {
+    const year = calendarMonth.getFullYear();
+    const month = calendarMonth.getMonth();
+    const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const rows = [];
+    let week = new Array(firstDay).fill(null);
+    for (let d = 1; d <= daysInMonth; d++) {
+      week.push(new Date(year, month, d));
+      if (week.length === 7) {
+        rows.push(week);
+        week = [];
+      }
+    }
+    if (week.length > 0) {
+      while (week.length < 7) week.push(null);
+      rows.push(week);
+    }
+    return rows;
+  }, [calendarMonth]);
+
+  const formatDateDisplay = (dateStr) => {
+    if (!dateStr) return '';
+    const d = new Date(dateStr + 'T00:00:00');
+    const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
+    const dd = String(d.getDate()).padStart(2, '0');
+    const monthName = d.toLocaleDateString('en-US', { month: 'short' });
+    const yyyy = d.getFullYear();
+    return `${dayName}, ${dd} ${monthName} ${yyyy}`;
+  };
 
   const labs = [
     { name: 'Physics Lab 1', color: '#FF6B6B', category: 'Physics' },
@@ -335,7 +373,7 @@ export default function book() {
             marginBottom: '30px',
           }}>
             {/* Date */}
-            <div>
+            <div ref={calendarRef} style={{ position: 'relative' }}>
               <label style={{
                 display: 'block',
                 color: '#FFD700',
@@ -346,39 +384,212 @@ export default function book() {
               }}>
                 Date *
               </label>
-              <select
+              {/* Hidden input for form validation */}
+              <input
+                type="hidden"
                 value={formData.date}
-                onChange={(e) => handleInputChange('date', e.target.value)}
                 required
+              />
+              <div
+                onClick={() => setShowCalendar(!showCalendar)}
                 style={{
                   width: '100%',
                   padding: '15px',
                   background: 'rgba(255, 255, 255, 0.05)',
-                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  border: `2px solid ${showCalendar ? labColor : 'rgba(255, 255, 255, 0.1)'}`,
                   borderRadius: '12px',
                   color: formData.date ? '#ffffff' : '#a0a0c0',
                   fontSize: '1rem',
                   fontFamily: '"Poppins", sans-serif',
                   transition: 'all 0.3s ease',
-                  outline: 'none',
                   cursor: 'pointer',
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.border = `2px solid ${labColor}`;
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                  boxSizing: 'border-box',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  userSelect: 'none',
                 }}
               >
-                <option value="">Select date</option>
-                {allowedDates.map((d) => (
-                  <option key={d.value} value={d.value} style={{ background: '#1a1a2e' }}>
-                    {d.label}
-                  </option>
-                ))}
-              </select>
+                <span>{formData.date ? formatDateDisplay(formData.date) : 'Select date'}</span>
+              </div>
+
+              {/* Calendar Popup */}
+              {showCalendar && (
+                <div style={{
+                  position: 'absolute',
+                  top: '100%',
+                  left: 0,
+                  marginTop: '8px',
+                  background: '#1e1e3a',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  zIndex: 1000,
+                  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.6)',
+                  minWidth: '320px',
+                  backdropFilter: 'blur(20px)',
+                }}>
+                  {/* Month navigation */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '16px',
+                  }}>
+                    <button
+                      type="button"
+                      onClick={() => setCalendarMonth(new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1))}
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.08)',
+                        border: 'none',
+                        borderRadius: '8px',
+                        color: '#FFD700',
+                        fontSize: '1.2rem',
+                        cursor: 'pointer',
+                        padding: '6px 12px',
+                        transition: 'background 0.2s',
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'}
+                    >
+                      &#8249;
+                    </button>
+                    <span style={{
+                      color: '#ffffff',
+                      fontWeight: '600',
+                      fontSize: '1.05rem',
+                      letterSpacing: '0.5px',
+                    }}>
+                      {calendarMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setCalendarMonth(new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1))}
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.08)',
+                        border: 'none',
+                        borderRadius: '8px',
+                        color: '#FFD700',
+                        fontSize: '1.2rem',
+                        cursor: 'pointer',
+                        padding: '6px 12px',
+                        transition: 'background 0.2s',
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'}
+                    >
+                      &#8250;
+                    </button>
+                  </div>
+
+                  {/* Weekday headers */}
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(7, 1fr)',
+                    gap: '4px',
+                    marginBottom: '8px',
+                  }}>
+                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
+                      <div key={d} style={{
+                        textAlign: 'center',
+                        color: '#a0a0c0',
+                        fontSize: '0.75rem',
+                        fontWeight: '600',
+                        padding: '4px 0',
+                        letterSpacing: '0.5px',
+                      }}>
+                        {d}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Day grid */}
+                  {calendarDays.map((week, wi) => (
+                    <div key={wi} style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(7, 1fr)',
+                      gap: '4px',
+                    }}>
+                      {week.map((day, di) => {
+                        if (!day) {
+                          return <div key={di} style={{ padding: '10px' }} />;
+                        }
+                        const bookable = isDateBookable(day);
+                        const yyyy = day.getFullYear();
+                        const mm = String(day.getMonth() + 1).padStart(2, '0');
+                        const dd = String(day.getDate()).padStart(2, '0');
+                        const dateVal = `${yyyy}-${mm}-${dd}`;
+                        const isSelected = formData.date === dateVal;
+                        const isToday = (() => {
+                          const t = new Date(); t.setHours(0,0,0,0);
+                          return day.getTime() === t.getTime();
+                        })();
+
+                        return (
+                          <button
+                            type="button"
+                            key={di}
+                            disabled={!bookable}
+                            onClick={() => {
+                              if (bookable) {
+                                handleInputChange('date', dateVal);
+                                setShowCalendar(false);
+                              }
+                            }}
+                            style={{
+                              padding: '10px 4px',
+                              borderRadius: '10px',
+                              border: isToday ? '1px solid rgba(255, 215, 0, 0.4)' : '1px solid transparent',
+                              background: isSelected
+                                ? 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)'
+                                : bookable
+                                  ? 'rgba(255, 255, 255, 0.04)'
+                                  : 'transparent',
+                              color: isSelected
+                                ? '#1a1a2e'
+                                : bookable
+                                  ? '#ffffff'
+                                  : 'rgba(255, 255, 255, 0.2)',
+                              fontWeight: isSelected ? '700' : '400',
+                              fontSize: '0.9rem',
+                              fontFamily: '"Poppins", sans-serif',
+                              cursor: bookable ? 'pointer' : 'default',
+                              transition: 'all 0.2s ease',
+                              textAlign: 'center',
+                            }}
+                            onMouseEnter={(e) => {
+                              if (bookable && !isSelected) {
+                                e.currentTarget.style.background = 'rgba(255, 215, 0, 0.15)';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (bookable && !isSelected) {
+                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                              }
+                            }}
+                          >
+                            {day.getDate()}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ))}
+
+                  {/* Legend */}
+                  <div style={{
+                    marginTop: '14px',
+                    paddingTop: '12px',
+                    borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                    display: 'flex',
+                    gap: '16px',
+                    justifyContent: 'center',
+                  }}>
+                    <span style={{ color: '#a0a0c0', fontSize: '0.7rem' }}>
+                      &#9679; Weekends &amp; &lt;5 working days disabled
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Start Time */}
