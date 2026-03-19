@@ -14,13 +14,11 @@ export default function book() {
     level: '',
     class: '',
     subject: '',
+    workType: '',
     notes: '',
   });
 
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [passwordInput, setPasswordInput] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [passwordError, setPasswordError] = useState('');
   const [showCalendar, setShowCalendar] = useState(false);
   const [calendarMonth, setCalendarMonth] = useState(() => {
     const d = new Date();
@@ -119,19 +117,6 @@ export default function book() {
     setFormData({ ...formData, [field]: value });
   };
 
-  const handlePasswordSubmit = (e) => {
-    e.preventDefault();
-    const correctPassword = 'science2026';
-    
-    if (passwordInput === correctPassword) {
-      setIsAuthenticated(true);
-      setPasswordError('');
-    } else {
-      setPasswordError('Incorrect password. Please try again.');
-      setPasswordInput('');
-    }
-  };
-
   const formatTimeForSheet = (timeValue) => {
     if (!timeValue) return '';
     const hour = Math.floor(timeValue);
@@ -186,6 +171,7 @@ export default function book() {
         level: '',
         class: '',
         subject: '',
+        workType: '',
         notes: '',
       });
     }, 3000);
@@ -202,126 +188,6 @@ export default function book() {
     }}>
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
       
-      {!isAuthenticated ? (
-        // password entry
-        <div style={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.03)',
-            borderRadius: '25px',
-            padding: '60px 40px',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
-            maxWidth: '400px',
-            width: '100%',
-          }}>
-            <h2 style={{
-              fontFamily: '"Playfair Display", serif',
-              fontSize: '2rem',
-              background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              marginBottom: '30px',
-              textAlign: 'center',
-              fontWeight: '700',
-              letterSpacing: '1px',
-            }}>
-              Access Required
-            </h2>
-            <form onSubmit={handlePasswordSubmit}>
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{
-                  display: 'block',
-                  color: '#FFD700',
-                  fontSize: '1rem',
-                  fontWeight: '600',
-                  marginBottom: '12px',
-                  letterSpacing: '0.5px',
-                }}>
-                  Enter Password
-                </label>
-                <input
-                  type="password"
-                  value={passwordInput}
-                  onChange={(e) => {
-                    setPasswordInput(e.target.value);
-                    setPasswordError('');
-                  }}
-                  placeholder="Enter password to access booking"
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '15px',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '2px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: '12px',
-                    color: '#ffffff',
-                    fontSize: '1rem',
-                    fontFamily: '"Poppins", sans-serif',
-                    transition: 'all 0.3s ease',
-                    outline: 'none',
-                    boxSizing: 'border-box',
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.border = '2px solid #FFD700';
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                  }}
-                />
-              </div>
-              {passwordError && (
-                <div style={{
-                  color: '#FF6B6B',
-                  fontSize: '0.9rem',
-                  marginBottom: '20px',
-                  textAlign: 'center',
-                  fontWeight: '500',
-                }}>
-                  {passwordError}
-                </div>
-              )}
-              <button
-                type="submit"
-                style={{
-                  width: '100%',
-                  padding: '15px',
-                  background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-                  border: 'none',
-                  borderRadius: '12px',
-                  color: '#ffffff',
-                  fontSize: '1.1rem',
-                  fontWeight: '700',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  letterSpacing: '1px',
-                  textTransform: 'uppercase',
-                  boxShadow: '0 8px 25px rgba(255, 215, 0, 0.44)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 12px 35px rgba(255, 215, 0, 0.54)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 8px 25px rgba(255, 215, 0, 0.44)';
-                }}
-              >
-                Unlock
-              </button>
-            </form>
-          </div>
-        </div>
-      ) : (
-        // form content
         <>
         <div style={{
           maxWidth: '900px',
@@ -1003,6 +869,51 @@ export default function book() {
                 <option value="Upper Secondary Science" style={{ background: '#1a1a2e' }}>Upper Secondary Science</option>
               </select>
             </div>
+
+            {/* Type of Work */}
+            <div>
+              <label style={{
+                display: 'block',
+                color: '#FFD700',
+                fontSize: '1rem',
+                fontWeight: '600',
+                marginBottom: '12px',
+                letterSpacing: '0.5px',
+              }}>
+                Type of Work *
+              </label>
+              <select
+                value={formData.workType}
+                onChange={(e) => handleInputChange('workType', e.target.value)}
+                required
+                style={{
+                  width: '100%',
+                  padding: '15px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  color: formData.workType ? '#ffffff' : '#a0a0c0',
+                  fontSize: '1rem',
+                  fontFamily: '"Poppins", sans-serif',
+                  transition: 'all 0.3s ease',
+                  outline: 'none',
+                  cursor: 'pointer',
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.border = `2px solid ${labColor}`;
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                }}
+              >
+                <option value="">Select type</option>
+                <option value="Individual" style={{ background: '#1a1a2e' }}>Individual</option>
+                <option value="Pairwork" style={{ background: '#1a1a2e' }}>Pairwork</option>
+                <option value="Groupwork" style={{ background: '#1a1a2e' }}>Groupwork</option>
+              </select>
+            </div>
           </div>
 
           {/* Experiment Details */}
@@ -1015,14 +926,13 @@ export default function book() {
               marginBottom: '12px',
               letterSpacing: '0.5px',
             }}>
-              Experiment Details *
+              Experiment Details
             </label>
             <textarea
               value={formData.notes}
               onChange={(e) => handleInputChange('notes', e.target.value)}
               placeholder="Describe the experiment, equipment needed, or special requirements..."
               rows={4}
-              required
               style={{
                 width: '100%',
                 padding: '15px',
@@ -1170,7 +1080,6 @@ export default function book() {
         </div>
       )}
         </>
-      )}
     </div>
   );
 }

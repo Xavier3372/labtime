@@ -16,15 +16,15 @@ export async function GET() {
 
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: process.env.GOOGLE_SHEET_ID,
-            range: 'Bookings!A2:M',
+            range: 'Bookings!A2:N',
         });
 
         const rows = response.data.values || [];
         
-        // Transform the data into calendar format
+        // transform data into date
         const bookingsData: any = {};
 
-        // Convert time format "08:30" to decimal 8.5
+        // convert time format
         const parseTimeFormat = (timeStr: any) => {
             if (!timeStr) return 8;
             if (typeof timeStr === 'number') return timeStr; // Already a number
@@ -34,7 +34,7 @@ export async function GET() {
         };
 
         rows.forEach((row: any[]) => {
-            const [date, startTime, endTime, title, teacher, phone, numStudents, level, classVal, subject, notes, lab, approved] = row;
+            const [date, startTime, endTime, title, teacher, phone, numStudents, level, classVal, subject, workType, notes, lab, approved] = row;
             
             if (!lab || !date) return; // Skip incomplete rows
             
@@ -60,6 +60,7 @@ export async function GET() {
                 level: level || '',
                 class: classVal || '',
                 subject: subject || '',
+                workType: workType || '',
                 notes: notes || '',
                 approved: approved
             });

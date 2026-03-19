@@ -24,29 +24,29 @@ export async function POST(req: Request) {
 
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: process.env.GOOGLE_SHEET_ID,
-            range: 'Bookings!A2:M',
+            range: 'Bookings!A2:N',
         });
 
         const rows = response.data.values || [];
         
-        // Filter bookings by phone number
+        // filter bookings by phone number
         const userBookings: any[] = [];
 
-        // Convert time format "08:30" to decimal 8.5
+        // convert time decimal
         const parseTimeFormat = (timeStr: any) => {
             if (!timeStr) return 8;
-            if (typeof timeStr === 'number') return timeStr; // Already a number
+            if (typeof timeStr === 'number') return timeStr; // already a number
             const timeString = timeStr.toString().trim();
             const [hours, minutes] = timeString.split(':').map(Number);
             return hours + (minutes || 0) / 60;
         };
 
         rows.forEach((row: any[]) => {
-            const [date, startTime, endTime, title, teacher, userPhone, numStudents, level, classVal, subject, notes, lab, approved] = row;
+            const [date, startTime, endTime, title, teacher, userPhone, numStudents, level, classVal, subject, workType, notes, lab, approved] = row;
             
-            if (!date) return; // Skip incomplete rows
+            if (!date) return; // skip incomplete rows
             
-            // Match phone number
+            // match phone number
             if (userPhone && userPhone.toString().trim() === phone.toString().trim()) {
                 userBookings.push({
                     lab,
@@ -60,6 +60,7 @@ export async function POST(req: Request) {
                     level: level || '',
                     class: classVal || '',
                     subject: subject || '',
+                    workType: workType || '',
                     notes: notes || '',
                     approved: approved?.toString().toLowerCase() === 'approved' ? 'approved' : approved?.toString().toLowerCase() === 'rejected' ? 'rejected' : 'pending',
                     approvalStatus: approved?.toString().toLowerCase() === 'approved' ? 'Approved' : approved?.toString().toLowerCase() === 'rejected' ? 'Rejected' : 'Pending'

@@ -195,7 +195,16 @@ export default function mybookings() {
                 display: 'grid',
                 gap: '20px',
               }}>
-                {bookings.map((booking, index) => (
+                {[...bookings].sort((a, b) => {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+                  const dateA = new Date(a.date + 'T00:00:00');
+                  const dateB = new Date(b.date + 'T00:00:00');
+                  const pastA = dateA < today;
+                  const pastB = dateB < today;
+                  if (pastA !== pastB) return pastA ? 1 : -1;
+                  return pastA ? (dateB - dateA) : (dateA - dateB);
+                }).map((booking, index) => (
                   <div
                     key={index}
                     style={{

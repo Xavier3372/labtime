@@ -11,6 +11,7 @@ type SheetForm = {
     level: string,
     class: string,
     subject: string,
+    workType: string,
     notes: string,
 }
 
@@ -29,7 +30,7 @@ export async function POST(req: Request) {
             }, { status: 400 });
         }
 
-        // Validate booking date is a working day (Mon-Fri) and at least 5 working days in advance
+        // validate booking date
         const bookingDate = new Date(body.date + 'T00:00:00');
         const dayOfWeek = bookingDate.getDay();
         if (dayOfWeek === 0 || dayOfWeek === 6) {
@@ -77,10 +78,10 @@ export async function POST(req: Request) {
                     {
                         insertDimension: {
                             range: {
-                                sheetId: 0, // Bookings sheet
+                                sheetId: 0, // bookings sheet
                                 dimension: 'ROWS',
-                                startIndex: 1, // Insert after header row (row 1)
-                                endIndex: 2, // Insert 1 row
+                                startIndex: 1, // insert after header row
+                                endIndex: 2, // insert 1 row
                             },
                         },
                     },
@@ -88,10 +89,10 @@ export async function POST(req: Request) {
             },
         });
 
-        // Now update the new row with the booking data
+        // update new row with booking data
         const response = await sheets.spreadsheets.values.update({
             spreadsheetId: process.env.GOOGLE_SHEET_ID,
-            range: 'Bookings!A2:K2',
+            range: 'Bookings!A2:L2',
             valueInputOption: 'USER_ENTERED',
             requestBody: { 
                 values: [[
@@ -105,6 +106,7 @@ export async function POST(req: Request) {
                     body.level,
                     body.class,
                     body.subject,
+                    body.workType,
                     body.notes
                 ]]
             }

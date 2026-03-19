@@ -67,6 +67,8 @@ export default function Calendar() {
     { name: 'Biology Lab 1', color: '#95E1D3', category: 'Biology' },
     { name: 'Biology Lab 2', color: '#B8F4E8', category: 'Biology' },
   ];
+
+  const btcRow = { name: 'BTC', label: 'Bring to Class', color: '#FFD700', category: 'BTC' };
   
   const getDayName = (date) => {
     return date.toLocaleDateString('en-US', { weekday: 'long' });
@@ -152,7 +154,10 @@ export default function Calendar() {
     return unique;
   };
 
-  const getLabData = (labName) => labs.find(lab => lab.name === labName);
+  const getLabData = (labName) => {
+    if (labName === btcRow.label) return btcRow;
+    return labs.find(lab => lab.name === labName);
+  };
 
   return (
     <div style={{
@@ -467,6 +472,108 @@ export default function Calendar() {
                 })}
               </>
             ))}
+
+            {/* Bring to Class Row */}
+            <>
+              <div
+                key={`label-${btcRow.name}`}
+                style={{
+                  padding: '15px 12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  borderRadius: '10px',
+                  background: `${btcRow.color}11`,
+                  border: `1px solid ${btcRow.color}33`,
+                }}
+              >
+                <div style={{
+                  width: '10px',
+                  height: '10px',
+                  borderRadius: '50%',
+                  background: btcRow.color,
+                  flexShrink: 0,
+                }} />
+                <span style={{
+                  color: btcRow.color,
+                  fontWeight: '600',
+                  fontSize: '0.85rem',
+                  lineHeight: '1.2',
+                }}>
+                  {btcRow.label}
+                </span>
+              </div>
+
+              {weekDates.map((date, dayIndex) => {
+                const dayBookings = getLabBookingsForDate(btcRow.name, date);
+                return (
+                  <div
+                    key={`${btcRow.name}-${dayIndex}`}
+                    style={{
+                      padding: '8px',
+                      borderRadius: '10px',
+                      background: 'rgba(255, 255, 255, 0.02)',
+                      border: '1px solid rgba(255, 255, 255, 0.05)',
+                      minHeight: '80px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '6px',
+                    }}
+                  >
+                    {dayBookings.length > 0 ? (
+                      dayBookings.map((booking, bIndex) => {
+                        const levelColor = getLevelColor(booking);
+                        return (
+                          <div
+                            key={bIndex}
+                            onClick={() => openBookingModal({ ...booking, labName: btcRow.label }, date)}
+                            style={{
+                              padding: '8px 10px',
+                              background: `linear-gradient(135deg, ${levelColor}22 0%, ${levelColor}11 100%)`,
+                              borderRadius: '8px',
+                              border: `1px solid ${levelColor}44`,
+                              cursor: 'pointer',
+                              transition: 'all 0.2s ease',
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.transform = 'translateY(-1px)';
+                              e.currentTarget.style.boxShadow = `0 4px 12px ${levelColor}44`;
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.transform = 'translateY(0)';
+                              e.currentTarget.style.boxShadow = 'none';
+                            }}
+                          >
+                            <div style={{
+                              color: levelColor,
+                              fontSize: '0.65rem',
+                              fontWeight: '700',
+                              marginBottom: '2px',
+                            }}>
+                              {formatTime(booking.startTime)} – {formatTime(booking.endTime)}
+                            </div>
+                            <div style={{
+                              color: '#ffffff',
+                              fontWeight: '600',
+                              fontSize: '0.75rem',
+                              lineHeight: '1.2',
+                            }}>
+                              {booking.title}
+                            </div>
+                            <div style={{
+                              color: 'rgba(255, 255, 255, 0.6)',
+                              fontSize: '0.65rem',
+                            }}>
+                              {booking.instructor}
+                            </div>
+                          </div>
+                        );
+                      })
+                    ) : null}
+                  </div>
+                );
+              })}
+            </>
           </div>
         </div>
 
