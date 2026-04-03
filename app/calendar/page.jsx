@@ -81,7 +81,7 @@ export default function Calendar() {
   };
 
   const levelColors = {
-    'Secondary 1': '#4ECDC4',
+    'Secondary 1': '#9B59B6',
     'Secondary 2': '#45B7D1',
     'Secondary 3': '#F7DC6F',
     'Secondary 4': '#FF8C42',
