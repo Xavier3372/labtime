@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react';
 
-const ADMIN_PASSWORD = "SCSSAdmin2026";
+const ADMIN_PASSWORD = "SCIENCE2026";
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/1tPz7vKAmZU8SpMy-bsswc3oofR2VCgPnIz4hQdBUdbA/edit?usp=sharing";
 
 export default function AdminPage() {

@@ -88,9 +88,22 @@ export default function Calendar() {
     'Secondary 5': '#E74C3C',
   };
 
+  const levelEmojis = {
+    'Secondary 1': '🌱',
+    'Secondary 2': '📘',
+    'Secondary 3': '⚗️',
+    'Secondary 4': '🔬',
+    'Secondary 5': '🏆',
+  };
+
   const getLevelColor = (booking) => {
     if (!booking?.level) return '#888888';
     return levelColors[booking.level] || '#888888';
+  };
+
+  const getLevelEmoji = (booking) => {
+    if (!booking?.level) return '📋';
+    return levelEmojis[booking.level] || '📋';
   };
 
   useEffect(() => {
@@ -420,6 +433,7 @@ export default function Calendar() {
                       {dayBookings.length > 0 ? (
                         dayBookings.map((booking, bIndex) => {
                           const levelColor = getLevelColor(booking);
+                          const levelEmoji = getLevelEmoji(booking);
                           return (
                             <div
                               key={bIndex}
@@ -446,7 +460,11 @@ export default function Calendar() {
                                 fontSize: '0.65rem',
                                 fontWeight: '700',
                                 marginBottom: '2px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px',
                               }}>
+                                <span style={{ fontSize: '0.75rem' }}>{levelEmoji}</span>
                                 {formatTime(booking.startTime)} – {formatTime(booking.endTime)}
                               </div>
                               <div style={{
@@ -523,6 +541,7 @@ export default function Calendar() {
                     {dayBookings.length > 0 ? (
                       dayBookings.map((booking, bIndex) => {
                         const levelColor = getLevelColor(booking);
+                        const levelEmoji = getLevelEmoji(booking);
                         return (
                           <div
                             key={bIndex}
@@ -549,7 +568,11 @@ export default function Calendar() {
                               fontSize: '0.65rem',
                               fontWeight: '700',
                               marginBottom: '2px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '4px',
                             }}>
+                              <span style={{ fontSize: '0.75rem' }}>{levelEmoji}</span>
                               {formatTime(booking.startTime)} – {formatTime(booking.endTime)}
                             </div>
                             <div style={{
@@ -593,11 +616,12 @@ export default function Calendar() {
               color: '#475569',
               fontSize: '0.9rem',
             }}>
+              <span style={{ fontSize: '1.1rem' }}>{levelEmojis[level]}</span>
               <div style={{
-                width: '20px',
-                height: '20px',
+                width: '14px',
+                height: '14px',
                 background: `linear-gradient(135deg, ${color}dd 0%, ${color}bb 100%)`,
-                borderRadius: '5px',
+                borderRadius: '4px',
               }} />
               {level}
             </div>
@@ -716,6 +740,7 @@ export default function Calendar() {
                   color: '#1e40af',
                   fontWeight: '700',
                 }}>
+                  <span style={{ marginRight: '12px' }}>{levelEmojis[selectedBooking.level] || '📋'}</span>
                   {selectedBooking.title}
                 </h2>
 
