@@ -453,7 +453,7 @@ export default function Calendar() {
                               }}
                             >
                               <div style={{
-                                color: levelColor,
+                                color: '#000000',
                                 fontSize: '0.65rem',
                                 fontWeight: '700',
                                 marginBottom: '2px',
@@ -465,7 +465,7 @@ export default function Calendar() {
                                 {formatTime(booking.startTime)} – {formatTime(booking.endTime)}
                               </div>
                               <div style={{
-                                color: '#ffffff',
+                                color: '#000000',
                                 fontWeight: '600',
                                 fontSize: '0.75rem',
                                 lineHeight: '1.2',
@@ -473,7 +473,7 @@ export default function Calendar() {
                                 {booking.title}
                               </div>
                               <div style={{
-                                color: 'rgba(255, 255, 255, 0.6)',
+                                color: '#000000',
                                 fontSize: '0.65rem',
                               }}>
                                 {booking.instructor}
@@ -561,7 +561,7 @@ export default function Calendar() {
                             }}
                           >
                             <div style={{
-                              color: levelColor,
+                              color: '#000000',
                               fontSize: '0.65rem',
                               fontWeight: '700',
                               marginBottom: '2px',
