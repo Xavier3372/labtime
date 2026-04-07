@@ -7,6 +7,7 @@ export default function mybookings() {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState('');
+  const [activeTab, setActiveTab] = useState('pending');
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -173,13 +174,13 @@ export default function mybookings() {
             onMouseEnter={(e) => {
               if (!loading) {
                 e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 12px 35px rgba(255, 215, 0, 0.54)';
+                e.currentTarget.style.boxShadow = '0 12px 35px rgba(30, 64, 175, 0.54)';
               }
             }}
             onMouseLeave={(e) => {
               if (!loading) {
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 8px 25px rgba(255, 215, 0, 0.44)';
+                e.currentTarget.style.boxShadow = '0 8px 25px rgba(30, 64, 175, 0)';
               }
             }}
           >
@@ -190,21 +191,80 @@ export default function mybookings() {
         {/* Bookings Display */}
         {searched && (
           <div>
-            {bookings.length > 0 ? (
-              <div style={{
-                display: 'grid',
-                gap: '20px',
-              }}>
-                {[...bookings].sort((a, b) => {
-                  const today = new Date();
-                  today.setHours(0, 0, 0, 0);
-                  const dateA = new Date(a.date + 'T00:00:00');
-                  const dateB = new Date(b.date + 'T00:00:00');
-                  const pastA = dateA < today;
-                  const pastB = dateB < today;
-                  if (pastA !== pastB) return pastA ? 1 : -1;
-                  return pastA ? (dateB - dateA) : (dateA - dateB);
-                }).map((booking, index) => (
+            {/* Tabs */}
+            <div style={{
+              display: 'flex',
+              gap: '10px',
+              marginBottom: '25px',
+            }}>
+              {[
+                { key: 'pending', label: 'Pending', color: '#FFA500' },
+                { key: 'approved', label: 'Approved', color: '#4ECDC4' },
+                { key: 'rejected', label: 'Rejected', color: '#FF6B6B' },
+              ].map((tab) => {
+                const count = bookings.filter(b => b.approved === tab.key).length;
+                const isActive = activeTab === tab.key;
+                return (
+                  <button
+                    key={tab.key}
+                    onClick={() => setActiveTab(tab.key)}
+                    style={{
+                      flex: 1,
+                      padding: '14px 20px',
+                      background: isActive ? `${tab.color}22` : 'rgba(255, 255, 255, 0.8)',
+                      border: `2px solid ${isActive ? tab.color : 'rgba(0, 0, 0, 0.08)'}`,
+                      borderRadius: '12px',
+                      color: isActive ? tab.color : '#000000',
+                      fontSize: '1rem',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      fontFamily: '"Poppins", sans-serif',
+                      letterSpacing: '0.5px',
+                    }}
+                  >
+                    {tab.label} ({count})
+                  </button>
+                );
+              })}
+            </div>
+
+            {(() => {
+              const filtered = bookings.filter(b => b.approved === activeTab);
+              const sorted = [...filtered].sort((a, b) => {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const dateA = new Date(a.date + 'T00:00:00');
+                const dateB = new Date(b.date + 'T00:00:00');
+                const pastA = dateA < today;
+                const pastB = dateB < today;
+                if (pastA !== pastB) return pastA ? 1 : -1;
+                return pastA ? (dateB - dateA) : (dateA - dateB);
+              });
+
+              if (sorted.length === 0) {
+                return (
+                  <div style={{
+                    background: 'rgba(255, 255, 255, 0.8)',
+                    borderRadius: '15px',
+                    padding: '40px',
+                    textAlign: 'center',
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                  }}>
+                    <p style={{
+                      color: '#000000',
+                      fontSize: '1.1rem',
+                      margin: 0,
+                    }}>
+                      No {activeTab} bookings
+                    </p>
+                  </div>
+                );
+              }
+
+              return (
+                <div style={{ display: 'grid', gap: '20px' }}>
+                  {sorted.map((booking, index) => (
                   <div
                     key={index}
                     style={{
@@ -461,23 +521,8 @@ export default function mybookings() {
                   </div>
                 ))}
               </div>
-            ) : !error && (
-              <div style={{
-                background: 'rgba(255, 255, 255, 0.8)',
-                borderRadius: '15px',
-                padding: '40px',
-                textAlign: 'center',
-                border: '1px solid rgba(0, 0, 0, 0.08)',
-              }}>
-                <p style={{
-                  color: '#000000',
-                  fontSize: '1.1rem',
-                  margin: 0,
-                }}>
-                  No bookings found for this phone number
-                </p>
-              </div>
-            )}
+              );
+            })()}
           </div>
         )}
       </div>
