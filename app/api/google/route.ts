@@ -69,6 +69,31 @@ export async function POST(req: Request) {
         console.log('Initializing Google Sheets API...');
         const sheets = google.sheets({ version: 'v4', auth });
 
+        // Check if the date is blocked
+        const blockedResponse = await sheets.spreadsheets.values.get({
+            spreadsheetId: process.env.GOOGLE_SHEET_ID,
+            range: 'Blocked Dates!A:B',
+        });
+
+        const blockedRows = blockedResponse.data.values || [];
+        for (const row of blockedRows) {
+            const rawDate = row[0];
+            if (!rawDate) continue;
+            const parts = rawDate.split('/');
+            if (parts.length === 3) {
+                const month = parts[0].padStart(2, '0');
+                const day = parts[1].padStart(2, '0');
+                const year = parts[2];
+                const blockedDateKey = `${year}-${month}-${day}`;
+                if (blockedDateKey === body.date) {
+                    const reason = row[1] || 'This date is blocked';
+                    return Response.json({ 
+                        message: `This date is blocked: ${reason}`,
+                    }, { status: 400 });
+                }
+            }
+        }
+
         console.log('Appending data to spreadsheet...');
         
         await sheets.spreadsheets.batchUpdate({

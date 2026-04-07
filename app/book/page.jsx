@@ -20,6 +20,7 @@ export default function book() {
 
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [blockedDates, setBlockedDates] = useState({});
   const [calendarMonth, setCalendarMonth] = useState(() => {
     const d = new Date();
     return new Date(d.getFullYear(), d.getMonth(), 1);
@@ -35,6 +36,22 @@ export default function book() {
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  // Fetch blocked dates
+  useEffect(() => {
+    const fetchBlockedDates = async () => {
+      try {
+        const response = await fetch('/api/blocked-dates');
+        if (response.ok) {
+          const data = await response.json();
+          setBlockedDates(data);
+        }
+      } catch (error) {
+        console.error('Error fetching blocked dates:', error);
+      }
+    };
+    fetchBlockedDates();
   }, []);
 
   // Compute the minimum bookable date (5 working days from today)
@@ -58,8 +75,15 @@ export default function book() {
     if (day === 0 || day === 6) return false; // weekend
     const d = new Date(date);
     d.setHours(0, 0, 0, 0);
-    return d >= minBookableDate;
-  }, [minBookableDate]);
+    if (d < minBookableDate) return false;
+    // Check blocked dates
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const dateKey = `${yyyy}-${mm}-${dd}`;
+    if (blockedDates[dateKey]) return false;
+    return true;
+  }, [minBookableDate, blockedDates]);
 
   // Generate calendar grid for a given month
   const calendarDays = useMemo(() => {
@@ -386,6 +410,8 @@ export default function book() {
                         const dd = String(day.getDate()).padStart(2, '0');
                         const dateVal = `${yyyy}-${mm}-${dd}`;
                         const isSelected = formData.date === dateVal;
+                        const isBlocked = !!blockedDates[dateVal];
+                        const blockedReason = blockedDates[dateVal];
                         const isToday = (() => {
                           const t = new Date(); t.setHours(0,0,0,0);
                           return day.getTime() === t.getTime();
@@ -396,6 +422,7 @@ export default function book() {
                             type="button"
                             key={di}
                             disabled={!bookable}
+                            title={isBlocked ? `Blocked: ${blockedReason}` : ''}
                             onClick={() => {
                               if (bookable) {
                                 handleInputChange('date', dateVal);
@@ -405,23 +432,28 @@ export default function book() {
                             style={{
                               padding: '10px 4px',
                               borderRadius: '10px',
-                              border: isToday ? '1px solid rgba(30, 64, 175, 0.4)' : '1px solid transparent',
+                              border: isToday ? '1px solid rgba(30, 64, 175, 0.4)' : isBlocked ? '1px solid rgba(255, 107, 107, 0.3)' : '1px solid transparent',
                               background: isSelected
                                 ? 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)'
-                                : bookable
-                                  ? 'rgba(0, 0, 0, 0.02)'
-                                  : 'transparent',
+                                : isBlocked
+                                  ? 'rgba(255, 107, 107, 0.1)'
+                                  : bookable
+                                    ? 'rgba(0, 0, 0, 0.02)'
+                                    : 'transparent',
                               color: isSelected
                                 ? '#ffffff'
-                                : bookable
-                                  ? '#000000'
-                                  : 'rgba(0, 0, 0, 0.2)',
+                                : isBlocked
+                                  ? '#FF6B6B'
+                                  : bookable
+                                    ? '#000000'
+                                    : 'rgba(0, 0, 0, 0.2)',
                               fontWeight: isSelected ? '700' : '400',
                               fontSize: '0.9rem',
                               fontFamily: '"Poppins", sans-serif',
                               cursor: bookable ? 'pointer' : 'default',
                               transition: 'all 0.2s ease',
                               textAlign: 'center',
+                              textDecoration: isBlocked ? 'line-through' : 'none',
                             }}
                             onMouseEnter={(e) => {
                               if (bookable && !isSelected) {
@@ -447,11 +479,15 @@ export default function book() {
                     paddingTop: '12px',
                     borderTop: '1px solid rgba(0, 0, 0, 0.06)',
                     display: 'flex',
-                    gap: '16px',
-                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    gap: '6px',
+                    alignItems: 'center',
                   }}>
                     <span style={{ color: '#000000', fontSize: '0.7rem' }}>
                       &#9679; Weekends &amp; &lt;5 working days disabled
+                    </span>
+                    <span style={{ color: '#FF6B6B', fontSize: '0.7rem' }}>
+                      <s>date</s> = Blocked date
                     </span>
                   </div>
                 </div>

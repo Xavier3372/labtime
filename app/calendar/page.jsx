@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { FaChalkboardTeacher, FaRegCalendarAlt, FaRegClock } from 'react-icons/fa';
 import { IoMdPeople } from 'react-icons/io';
-import { MdOutlineClass } from 'react-icons/md';
+import { MdOutlineClass, MdBlock } from 'react-icons/md';
 
 export default function Calendar() {
   const [bookings, setBookings] = useState({});
@@ -10,6 +10,7 @@ export default function Calendar() {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [weeksData, setWeeksData] = useState({});
+  const [blockedDates, setBlockedDates] = useState({});
   
   const openBookingModal = (booking, date) => {
     setSelectedBooking({ ...booking, date });
@@ -133,8 +134,22 @@ export default function Calendar() {
         console.error('Error fetching weeks:', error);
       }
     };
+    const fetchBlockedDates = async () => {
+      try {
+        const response = await fetch('/api/blocked-dates');
+        if (response.ok) {
+          const data = await response.json();
+          setBlockedDates(data);
+        } else {
+          console.error('Failed to fetch blocked dates');
+        }
+      } catch (error) {
+        console.error('Error fetching blocked dates:', error);
+      }
+    };
     fetchBookings();
     fetchWeeks();
+    fetchBlockedDates();
   }, []);
 
   const getDateKey = (date) => {
@@ -349,33 +364,48 @@ export default function Calendar() {
             }}>
               Lab
             </div>
-            {weekDates.map((date, index) => (
-              <div
-                key={index}
-                style={{
-                  padding: '12px 8px',
-                  textAlign: 'center',
-                  fontWeight: '700',
-                  color: '#000000',
-                  background: 'rgba(30, 64, 175, 0.08)',
-                  borderRadius: '10px',
-                  fontSize: '0.95rem',
-                  letterSpacing: '0.5px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '2px',
-                }}
-              >
-                <div>{getDayName(date)}</div>
-                <div style={{
-                  fontSize: '0.8rem',
-                  fontWeight: '500',
-                  color: '#000000',
-                }}>
-                  {formatDate(date)}
+            {weekDates.map((date, index) => {
+              const dateKey = getDateKey(date);
+              const blockedReason = blockedDates[dateKey];
+              return (
+                <div
+                  key={index}
+                  style={{
+                    padding: '12px 8px',
+                    textAlign: 'center',
+                    fontWeight: '700',
+                    color: blockedReason ? '#FF6B6B' : '#000000',
+                    background: blockedReason ? 'rgba(255, 107, 107, 0.12)' : 'rgba(30, 64, 175, 0.08)',
+                    borderRadius: '10px',
+                    fontSize: '0.95rem',
+                    letterSpacing: '0.5px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '2px',
+                    border: blockedReason ? '1px solid rgba(255, 107, 107, 0.3)' : 'none',
+                  }}
+                >
+                  <div>{getDayName(date)}</div>
+                  <div style={{
+                    fontSize: '0.8rem',
+                    fontWeight: '500',
+                    color: blockedReason ? '#FF6B6B' : '#000000',
+                  }}>
+                    {formatDate(date)}
+                  </div>
+                  {blockedReason && (
+                    <div style={{
+                      fontSize: '0.65rem',
+                      fontWeight: '600',
+                      color: '#FF6B6B',
+                      marginTop: '2px',
+                    }}>
+                      <MdBlock style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} /> {blockedReason}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
 
             {/* Lab Rows */}
             {labs.map((lab) => (
@@ -412,6 +442,8 @@ export default function Calendar() {
 
                 {/* Day Cells for this Lab */}
                 {weekDates.map((date, dayIndex) => {
+                  const dateKey = getDateKey(date);
+                  const blockedReason = blockedDates[dateKey];
                   const dayBookings = getLabBookingsForDate(lab.name, date);
                   return (
                     <div
@@ -419,15 +451,31 @@ export default function Calendar() {
                       style={{
                         padding: '8px',
                         borderRadius: '10px',
-                        background: 'rgba(0, 0, 0, 0.02)',
-                        border: '1px solid rgba(0, 0, 0, 0.06)',
+                        background: blockedReason ? 'rgba(255, 107, 107, 0.06)' : 'rgba(0, 0, 0, 0.02)',
+                        border: blockedReason ? '1px solid rgba(255, 107, 107, 0.2)' : '1px solid rgba(0, 0, 0, 0.06)',
                         minHeight: '80px',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '6px',
+                        position: 'relative',
                       }}
                     >
-                      {dayBookings.length > 0 ? (
+                      {blockedReason ? (
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          height: '100%',
+                          minHeight: '60px',
+                          color: '#FF6B6B',
+                          fontSize: '0.75rem',
+                          fontWeight: '600',
+                          textAlign: 'center',
+                          padding: '4px',
+                        }}>
+                          <MdBlock style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} /> {blockedReason}
+                        </div>
+                      ) : dayBookings.length > 0 ? (
                         dayBookings.map((booking, bIndex) => {
                           const levelColor = getLevelColor(booking);
                           const levelEmoji = getLevelEmoji(booking);
@@ -530,6 +578,8 @@ export default function Calendar() {
               </div>
 
               {weekDates.map((date, dayIndex) => {
+                const dateKey = getDateKey(date);
+                const blockedReason = blockedDates[dateKey];
                 const dayBookings = getLabBookingsForDate(btcRow.name, date);
                 return (
                   <div
@@ -537,15 +587,30 @@ export default function Calendar() {
                     style={{
                       padding: '8px',
                       borderRadius: '10px',
-                      background: 'rgba(0, 0, 0, 0.02)',
-                      border: '1px solid rgba(0, 0, 0, 0.06)',
+                      background: blockedReason ? 'rgba(255, 107, 107, 0.06)' : 'rgba(0, 0, 0, 0.02)',
+                      border: blockedReason ? '1px solid rgba(255, 107, 107, 0.2)' : '1px solid rgba(0, 0, 0, 0.06)',
                       minHeight: '80px',
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '6px',
                     }}
                   >
-                    {dayBookings.length > 0 ? (
+                    {blockedReason ? (
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100%',
+                        minHeight: '60px',
+                        color: '#FF6B6B',
+                        fontSize: '0.75rem',
+                        fontWeight: '600',
+                        textAlign: 'center',
+                        padding: '4px',
+                      }}>
+                        <MdBlock style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} /> {blockedReason}
+                      </div>
+                    ) : dayBookings.length > 0 ? (
                       dayBookings.map((booking, bIndex) => {
                         const levelColor = getLevelColor(booking);
                         const levelEmoji = getLevelEmoji(booking);
