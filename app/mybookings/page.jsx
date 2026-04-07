@@ -49,7 +49,7 @@ export default function mybookings() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+      background: 'linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%)',
       fontFamily: '"Poppins", sans-serif',
       padding: '40px 20px',
     }}>
@@ -67,10 +67,10 @@ export default function mybookings() {
           <h1 style={{
             fontFamily: '"Playfair Display", serif',
             fontSize: '3.5rem',
-            background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
+            color: '#000000',
+            
+            
+            
             marginBottom: '10px',
             fontWeight: '700',
             letterSpacing: '2px',
@@ -78,7 +78,7 @@ export default function mybookings() {
             My Bookings
           </h1>
           <p style={{
-            color: '#a0a0c0',
+            color: '#000000',
             fontSize: '1.1rem',
             fontWeight: '300',
           }}>
@@ -88,18 +88,18 @@ export default function mybookings() {
 
         {/* Search Form */}
         <form onSubmit={handleSearch} style={{
-          background: 'rgba(255, 255, 255, 0.03)',
+          background: 'rgba(255, 255, 255, 0.8)',
           borderRadius: '25px',
           padding: '40px',
           backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
+          border: '1px solid rgba(0, 0, 0, 0.08)',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.08)',
           marginBottom: '40px',
         }}>
           <div style={{ marginBottom: '25px' }}>
             <label style={{
               display: 'block',
-              color: '#FFD700',
+              color: '#000000',
               fontSize: '1rem',
               fontWeight: '600',
               marginBottom: '15px',
@@ -119,10 +119,10 @@ export default function mybookings() {
               style={{
                 width: '100%',
                 padding: '15px',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '2px solid rgba(255, 255, 255, 0.1)',
+                background: 'rgba(0, 0, 0, 0.03)',
+                border: '2px solid rgba(0, 0, 0, 0.08)',
                 borderRadius: '12px',
-                color: '#ffffff',
+                color: '#000000',
                 fontSize: '1rem',
                 fontFamily: '"Poppins", sans-serif',
                 transition: 'all 0.3s ease',
@@ -130,12 +130,12 @@ export default function mybookings() {
                 boxSizing: 'border-box',
               }}
               onFocus={(e) => {
-                e.currentTarget.style.border = '2px solid #FFD700';
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.3)';
+                e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.08)';
+                e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)';
               }}
             />
           </div>
@@ -158,17 +158,17 @@ export default function mybookings() {
             style={{
               width: '100%',
               padding: '15px',
-              background: loading ? 'rgba(255, 215, 0, 0.5)' : 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+              background: loading ? 'rgba(30, 64, 175, 0.5)' : 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
               border: 'none',
               borderRadius: '12px',
-              color: '#ffffff',
+              color: '#000000',
               fontSize: '1.1rem',
               fontWeight: '700',
               cursor: loading ? 'not-allowed' : 'pointer',
               transition: 'all 0.3s ease',
               letterSpacing: '1px',
               textTransform: 'uppercase',
-              boxShadow: '0 8px 25px rgba(255, 215, 0, 0.44)',
+              boxShadow: '0 8px 25px rgba(30, 64, 175, 0.25)',
             }}
             onMouseEnter={(e) => {
               if (!loading) {
@@ -208,12 +208,12 @@ export default function mybookings() {
                   <div
                     key={index}
                     style={{
-                      background: 'rgba(255, 255, 255, 0.03)',
+                      background: 'rgba(255, 255, 255, 0.8)',
                       borderRadius: '15px',
                       padding: '25px',
                       backdropFilter: 'blur(20px)',
                       border: `2px solid ${booking.approved === 'approved' ? '#4ECDC4' : booking.approved === 'rejected' ? '#FF6B6B' : '#FFA500'}`,
-                      boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
+                      boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06)',
                     }}
                   >
                     <div style={{
@@ -224,7 +224,7 @@ export default function mybookings() {
                     }}>
                       <div>
                         <h3 style={{
-                          color: '#FFD700',
+                          color: '#000000',
                           fontSize: '1.3rem',
                           fontWeight: '700',
                           margin: '0 0 5px 0',
@@ -232,7 +232,7 @@ export default function mybookings() {
                           {booking.title}
                         </h3>
                         <p style={{
-                          color: '#a0a0c0',
+                          color: '#000000',
                           fontSize: '0.9rem',
                           margin: 0,
                         }}>
@@ -264,7 +264,7 @@ export default function mybookings() {
                     }}>
                       <div>
                         <p style={{
-                          color: '#a0a0c0',
+                          color: '#000000',
                           fontSize: '0.8rem',
                           fontWeight: '600',
                           marginBottom: '5px',
@@ -274,7 +274,7 @@ export default function mybookings() {
                           Date
                         </p>
                         <p style={{
-                          color: '#ffffff',
+                          color: '#000000',
                           fontSize: '1rem',
                           margin: 0,
                           fontWeight: '600',
@@ -290,7 +290,7 @@ export default function mybookings() {
 
                       <div>
                         <p style={{
-                          color: '#a0a0c0',
+                          color: '#000000',
                           fontSize: '0.8rem',
                           fontWeight: '600',
                           marginBottom: '5px',
@@ -300,7 +300,7 @@ export default function mybookings() {
                           Time
                         </p>
                         <p style={{
-                          color: '#ffffff',
+                          color: '#000000',
                           fontSize: '1rem',
                           margin: 0,
                           fontWeight: '600',
@@ -311,7 +311,7 @@ export default function mybookings() {
 
                       <div>
                         <p style={{
-                          color: '#a0a0c0',
+                          color: '#000000',
                           fontSize: '0.8rem',
                           fontWeight: '600',
                           marginBottom: '5px',
@@ -321,7 +321,7 @@ export default function mybookings() {
                           Teacher
                         </p>
                         <p style={{
-                          color: '#ffffff',
+                          color: '#000000',
                           fontSize: '1rem',
                           margin: 0,
                           fontWeight: '600',
@@ -332,7 +332,7 @@ export default function mybookings() {
 
                       <div>
                         <p style={{
-                          color: '#a0a0c0',
+                          color: '#000000',
                           fontSize: '0.8rem',
                           fontWeight: '600',
                           marginBottom: '5px',
@@ -342,7 +342,7 @@ export default function mybookings() {
                           Lab
                         </p>
                         <p style={{
-                          color: '#ffffff',
+                          color: '#000000',
                           fontSize: '1rem',
                           margin: 0,
                           fontWeight: '600',
@@ -353,7 +353,7 @@ export default function mybookings() {
 
                       <div>
                         <p style={{
-                          color: '#a0a0c0',
+                          color: '#000000',
                           fontSize: '0.8rem',
                           fontWeight: '600',
                           marginBottom: '5px',
@@ -363,7 +363,7 @@ export default function mybookings() {
                           Subject
                         </p>
                         <p style={{
-                          color: '#ffffff',
+                          color: '#000000',
                           fontSize: '1rem',
                           margin: 0,
                           fontWeight: '600',
@@ -374,7 +374,7 @@ export default function mybookings() {
 
                       <div>
                         <p style={{
-                          color: '#a0a0c0',
+                          color: '#000000',
                           fontSize: '0.8rem',
                           fontWeight: '600',
                           marginBottom: '5px',
@@ -384,7 +384,7 @@ export default function mybookings() {
                           Level
                         </p>
                         <p style={{
-                          color: '#ffffff',
+                          color: '#000000',
                           fontSize: '1rem',
                           margin: 0,
                           fontWeight: '600',
@@ -395,7 +395,7 @@ export default function mybookings() {
 
                       <div>
                         <p style={{
-                          color: '#a0a0c0',
+                          color: '#000000',
                           fontSize: '0.8rem',
                           fontWeight: '600',
                           marginBottom: '5px',
@@ -405,7 +405,7 @@ export default function mybookings() {
                           Class
                         </p>
                         <p style={{
-                          color: '#ffffff',
+                          color: '#000000',
                           fontSize: '1rem',
                           margin: 0,
                           fontWeight: '600',
@@ -416,7 +416,7 @@ export default function mybookings() {
 
                       <div>
                         <p style={{
-                          color: '#a0a0c0',
+                          color: '#000000',
                           fontSize: '0.8rem',
                           fontWeight: '600',
                           marginBottom: '5px',
@@ -426,7 +426,7 @@ export default function mybookings() {
                           Students
                         </p>
                         <p style={{
-                          color: '#ffffff',
+                          color: '#000000',
                           fontSize: '1rem',
                           margin: 0,
                           fontWeight: '600',
@@ -437,9 +437,9 @@ export default function mybookings() {
                     </div>
 
                     {booking.notes && (
-                      <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                      <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid rgba(0, 0, 0, 0.08)' }}>
                         <p style={{
-                          color: '#a0a0c0',
+                          color: '#000000',
                           fontSize: '0.8rem',
                           fontWeight: '600',
                           marginBottom: '8px',
@@ -449,7 +449,7 @@ export default function mybookings() {
                           Details
                         </p>
                         <p style={{
-                          color: '#ffffff',
+                          color: '#000000',
                           fontSize: '0.95rem',
                           margin: 0,
                           lineHeight: '1.6',
@@ -463,14 +463,14 @@ export default function mybookings() {
               </div>
             ) : !error && (
               <div style={{
-                background: 'rgba(255, 255, 255, 0.03)',
+                background: 'rgba(255, 255, 255, 0.8)',
                 borderRadius: '15px',
                 padding: '40px',
                 textAlign: 'center',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(0, 0, 0, 0.08)',
               }}>
                 <p style={{
-                  color: '#a0a0c0',
+                  color: '#000000',
                   fontSize: '1.1rem',
                   margin: 0,
                 }}>

@@ -22,7 +22,7 @@ export default function AdminPage() {
   return (
       <div style={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+        background: 'linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%)',
         fontFamily: '"Poppins", sans-serif',
         display: 'flex',
         alignItems: 'center',
@@ -32,28 +32,28 @@ export default function AdminPage() {
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
 
         <div style={{
-          background: 'rgba(255, 255, 255, 0.05)',
+          background: 'rgba(0, 0, 0, 0.03)',
           borderRadius: '25px',
           padding: '50px 40px',
           maxWidth: '440px',
           width: '100%',
           backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
+          border: '1px solid rgba(0, 0, 0, 0.08)',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.08)',
           textAlign: 'center',
         }}>
           <div style={{
             width: '70px',
             height: '70px',
-            background: 'rgba(255, 215, 0, 0.15)',
+            background: 'rgba(0, 0, 0, 0.03)',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 25px',
-            border: '2px solid rgba(255, 215, 0, 0.3)',
+            border: '2px solid rgba(0, 0, 0, 0.1)',
           }}>
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FFD700" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1e40af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
@@ -62,10 +62,10 @@ export default function AdminPage() {
           <h1 style={{
             fontFamily: '"Playfair Display", serif',
             fontSize: '2rem',
-            background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
+            color: '#000000',
+            
+            
+            
             marginBottom: '10px',
             fontWeight: '700',
           }}>
@@ -73,7 +73,7 @@ export default function AdminPage() {
           </h1>
 
           <p style={{
-            color: '#a0a0c0',
+            color: '#000000',
             fontSize: '0.95rem',
             marginBottom: '30px',
             fontWeight: '300',
@@ -90,12 +90,12 @@ export default function AdminPage() {
               style={{
                 width: '100%',
                 padding: '14px 18px',
-                background: 'rgba(255, 255, 255, 0.08)',
+                background: 'rgba(0, 0, 0, 0.05)',
                 border: error
                   ? '2px solid #E74C3C'
                   : '2px solid rgba(255, 255, 255, 0.15)',
                 borderRadius: '12px',
-                color: '#ffffff',
+                color: '#000000',
                 fontSize: '1rem',
                 outline: 'none',
                 marginBottom: '8px',
@@ -103,10 +103,10 @@ export default function AdminPage() {
                 transition: 'border-color 0.3s ease',
               }}
               onFocus={(e) => {
-                if (!error) e.currentTarget.style.borderColor = 'rgba(255, 215, 0, 0.5)';
+                if (!error) e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.3)';
               }}
               onBlur={(e) => {
-                if (!error) e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                if (!error) e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.1)';
               }}
             />
 
@@ -126,10 +126,10 @@ export default function AdminPage() {
               style={{
                 width: '100%',
                 padding: '14px',
-                background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+                color: '#000000',
                 border: 'none',
                 borderRadius: '12px',
-                color: '#1a1a2e',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '700',
                 cursor: 'pointer',

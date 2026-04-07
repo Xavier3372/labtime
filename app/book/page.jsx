@@ -177,12 +177,12 @@ export default function book() {
     }, 3000);
   };
 
-  const labColor = '#FFD700';
+  const labColor = '#1e40af';
 
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+      background: 'linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%)',
       fontFamily: '"Poppins", sans-serif',
       padding: '40px 20px',
     }}>
@@ -201,10 +201,10 @@ export default function book() {
           <h1 style={{
             fontFamily: '"Playfair Display", serif',
             fontSize: '3.5rem',
-            background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
+            color: '#000000',
+            
+            
+            
             marginBottom: '10px',
             fontWeight: '700',
             letterSpacing: '2px',
@@ -212,7 +212,7 @@ export default function book() {
             Book a Laboratory
           </h1>
           <p style={{
-            color: '#a0a0c0',
+            color: '#000000',
             fontSize: '1.1rem',
             fontWeight: '300',
           }}>
@@ -222,12 +222,12 @@ export default function book() {
 
         {/* Booking Form */}
         <form onSubmit={handleSubmit} style={{
-          background: 'rgba(255, 255, 255, 0.03)',
+          background: 'rgba(255, 255, 255, 0.8)',
           borderRadius: '25px',
           padding: '40px',
           backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
+          border: '1px solid rgba(0, 0, 0, 0.08)',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.08)',
         }}>
 
 
@@ -242,7 +242,7 @@ export default function book() {
             <div ref={calendarRef} style={{ position: 'relative' }}>
               <label style={{
                 display: 'block',
-                color: '#FFD700',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '600',
                 marginBottom: '12px',
@@ -261,10 +261,10 @@ export default function book() {
                 style={{
                   width: '100%',
                   padding: '15px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: `2px solid ${showCalendar ? labColor : 'rgba(255, 255, 255, 0.1)'}`,
+                  background: 'rgba(0, 0, 0, 0.03)',
+                  border: `2px solid ${showCalendar ? labColor : 'rgba(0, 0, 0, 0.08)'}`,
                   borderRadius: '12px',
-                  color: formData.date ? '#ffffff' : '#a0a0c0',
+                  color: formData.date ? '#000000' : '#a0a0c0',
                   fontSize: '1rem',
                   fontFamily: '"Poppins", sans-serif',
                   transition: 'all 0.3s ease',
@@ -286,12 +286,12 @@ export default function book() {
                   top: '100%',
                   left: 0,
                   marginTop: '8px',
-                  background: '#1e1e3a',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  background: '#ffffff',
+                  border: '1px solid rgba(0, 0, 0, 0.1)',
                   borderRadius: '16px',
                   padding: '20px',
                   zIndex: 1000,
-                  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.6)',
+                  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.12)',
                   minWidth: '320px',
                   backdropFilter: 'blur(20px)',
                 }}>
@@ -306,22 +306,22 @@ export default function book() {
                       type="button"
                       onClick={() => setCalendarMonth(new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1))}
                       style={{
-                        background: 'rgba(255, 255, 255, 0.08)',
+                        background: 'rgba(0, 0, 0, 0.05)',
                         border: 'none',
                         borderRadius: '8px',
-                        color: '#FFD700',
+                        color: '#000000',
                         fontSize: '1.2rem',
                         cursor: 'pointer',
                         padding: '6px 12px',
                         transition: 'background 0.2s',
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0, 0, 0, 0.08)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)'}
                     >
                       &#8249;
                     </button>
                     <span style={{
-                      color: '#ffffff',
+                      color: '#000000',
                       fontWeight: '600',
                       fontSize: '1.05rem',
                       letterSpacing: '0.5px',
@@ -332,17 +332,17 @@ export default function book() {
                       type="button"
                       onClick={() => setCalendarMonth(new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1))}
                       style={{
-                        background: 'rgba(255, 255, 255, 0.08)',
+                        background: 'rgba(0, 0, 0, 0.05)',
                         border: 'none',
                         borderRadius: '8px',
-                        color: '#FFD700',
+                        color: '#000000',
                         fontSize: '1.2rem',
                         cursor: 'pointer',
                         padding: '6px 12px',
                         transition: 'background 0.2s',
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0, 0, 0, 0.08)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)'}
                     >
                       &#8250;
                     </button>
@@ -358,7 +358,7 @@ export default function book() {
                     {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
                       <div key={d} style={{
                         textAlign: 'center',
-                        color: '#a0a0c0',
+                        color: '#000000',
                         fontSize: '0.75rem',
                         fontWeight: '600',
                         padding: '4px 0',
@@ -405,17 +405,17 @@ export default function book() {
                             style={{
                               padding: '10px 4px',
                               borderRadius: '10px',
-                              border: isToday ? '1px solid rgba(255, 215, 0, 0.4)' : '1px solid transparent',
+                              border: isToday ? '1px solid rgba(30, 64, 175, 0.4)' : '1px solid transparent',
                               background: isSelected
-                                ? 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)'
+                                ? 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)'
                                 : bookable
-                                  ? 'rgba(255, 255, 255, 0.04)'
+                                  ? 'rgba(0, 0, 0, 0.02)'
                                   : 'transparent',
                               color: isSelected
-                                ? '#1a1a2e'
+                                ? '#ffffff'
                                 : bookable
-                                  ? '#ffffff'
-                                  : 'rgba(255, 255, 255, 0.2)',
+                                  ? '#000000'
+                                  : 'rgba(0, 0, 0, 0.2)',
                               fontWeight: isSelected ? '700' : '400',
                               fontSize: '0.9rem',
                               fontFamily: '"Poppins", sans-serif',
@@ -425,12 +425,12 @@ export default function book() {
                             }}
                             onMouseEnter={(e) => {
                               if (bookable && !isSelected) {
-                                e.currentTarget.style.background = 'rgba(255, 215, 0, 0.15)';
+                                e.currentTarget.style.background = 'rgba(30, 64, 175, 0.1)';
                               }
                             }}
                             onMouseLeave={(e) => {
                               if (bookable && !isSelected) {
-                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                                e.currentTarget.style.background = 'rgba(0, 0, 0, 0.02)';
                               }
                             }}
                           >
@@ -445,12 +445,12 @@ export default function book() {
                   <div style={{
                     marginTop: '14px',
                     paddingTop: '12px',
-                    borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderTop: '1px solid rgba(0, 0, 0, 0.06)',
                     display: 'flex',
                     gap: '16px',
                     justifyContent: 'center',
                   }}>
-                    <span style={{ color: '#a0a0c0', fontSize: '0.7rem' }}>
+                    <span style={{ color: '#000000', fontSize: '0.7rem' }}>
                       &#9679; Weekends &amp; &lt;5 working days disabled
                     </span>
                   </div>
@@ -462,7 +462,7 @@ export default function book() {
             <div>
               <label style={{
                 display: 'block',
-                color: '#FFD700',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '600',
                 marginBottom: '12px',
@@ -477,10 +477,10 @@ export default function book() {
                 style={{
                   width: '100%',
                   padding: '15px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  background: 'rgba(0, 0, 0, 0.03)',
+                  border: '2px solid rgba(0, 0, 0, 0.08)',
                   borderRadius: '12px',
-                  color: formData.startTime ? '#ffffff' : '#a0a0c0',
+                  color: formData.startTime ? '#000000' : '#a0a0c0',
                   fontSize: '1rem',
                   fontFamily: '"Poppins", sans-serif',
                   transition: 'all 0.3s ease',
@@ -488,17 +488,17 @@ export default function book() {
                   cursor: 'pointer',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.border = `2px solid ${labColor}`;
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.3)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.08)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)';
                 }}
               >
                 <option value="">Select time</option>
                 {timeSlots.map((slot) => (
-                  <option key={slot.value} value={slot.value} style={{ background: '#1a1a2e' }}>
+                  <option key={slot.value} value={slot.value} style={{ background: '#ffffff' }}>
                     {slot.label}
                   </option>
                 ))}
@@ -509,7 +509,7 @@ export default function book() {
             <div>
               <label style={{
                 display: 'block',
-                color: '#FFD700',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '600',
                 marginBottom: '12px',
@@ -524,10 +524,10 @@ export default function book() {
                 style={{
                   width: '100%',
                   padding: '15px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  background: 'rgba(0, 0, 0, 0.03)',
+                  border: '2px solid rgba(0, 0, 0, 0.08)',
                   borderRadius: '12px',
-                  color: formData.duration ? '#ffffff' : '#a0a0c0',
+                  color: formData.endTime ? '#000000' : '#a0a0c0',
                   fontSize: '1rem',
                   fontFamily: '"Poppins", sans-serif',
                   transition: 'all 0.3s ease',
@@ -535,17 +535,17 @@ export default function book() {
                   cursor: 'pointer',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.border = `2px solid ${labColor}`;
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.3)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.08)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)';
                 }}
               >
                 <option value="">Select time</option>
                 {endTimeSlots.map((slot) => (
-                  <option key={slot.value} value={slot.value} style={{ background: '#1a1a2e' }}>
+                  <option key={slot.value} value={slot.value} style={{ background: '#ffffff' }}>
                     {slot.label}
                   </option>
                 ))}
@@ -557,7 +557,7 @@ export default function book() {
           <div style={{ marginBottom: '30px' }}>
             <label style={{
               display: 'block',
-              color: '#FFD700',
+              color: '#000000',
               fontSize: '1rem',
               fontWeight: '600',
               marginBottom: '12px',
@@ -574,22 +574,22 @@ export default function book() {
               style={{
                 width: '100%',
                 padding: '15px',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '2px solid rgba(255, 255, 255, 0.1)',
+                background: 'rgba(0, 0, 0, 0.03)',
+                border: '2px solid rgba(0, 0, 0, 0.08)',
                 borderRadius: '12px',
-                color: '#ffffff',
+                color: '#000000',
                 fontSize: '1rem',
                 fontFamily: '"Poppins", sans-serif',
                 transition: 'all 0.3s ease',
                 outline: 'none',
               }}
               onFocus={(e) => {
-                e.currentTarget.style.border = `2px solid ${labColor}`;
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.3)';
+                e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.08)';
+                e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)';
               }}
             />
           </div>
@@ -598,7 +598,7 @@ export default function book() {
           <div style={{ marginBottom: '30px' }}>
             <label style={{
               display: 'block',
-              color: '#FFD700',
+              color: '#000000',
               fontSize: '1rem',
               fontWeight: '600',
               marginBottom: '12px',
@@ -615,22 +615,22 @@ export default function book() {
               style={{
                 width: '100%',
                 padding: '15px',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '2px solid rgba(255, 255, 255, 0.1)',
+                background: 'rgba(0, 0, 0, 0.03)',
+                border: '2px solid rgba(0, 0, 0, 0.08)',
                 borderRadius: '12px',
-                color: '#ffffff',
+                color: '#000000',
                 fontSize: '1rem',
                 fontFamily: '"Poppins", sans-serif',
                 transition: 'all 0.3s ease',
                 outline: 'none',
               }}
               onFocus={(e) => {
-                e.currentTarget.style.border = `2px solid ${labColor}`;
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.3)';
+                e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.08)';
+                e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)';
               }}
             />
           </div>
@@ -646,7 +646,7 @@ export default function book() {
             <div>
               <label style={{
                 display: 'block',
-                color: '#FFD700',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '600',
                 marginBottom: '12px',
@@ -663,22 +663,22 @@ export default function book() {
                 style={{
                   width: '100%',
                   padding: '15px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  background: 'rgba(0, 0, 0, 0.03)',
+                  border: '2px solid rgba(0, 0, 0, 0.08)',
                   borderRadius: '12px',
-                  color: '#ffffff',
+                  color: '#000000',
                   fontSize: '1rem',
                   fontFamily: '"Poppins", sans-serif',
                   transition: 'all 0.3s ease',
                   outline: 'none',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.border = `2px solid ${labColor}`;
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.3)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.08)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)';
                 }}
               />
             </div>
@@ -694,7 +694,7 @@ export default function book() {
             <div>
               <label style={{
                 display: 'block',
-                color: '#FFD700',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '600',
                 marginBottom: '12px',
@@ -712,22 +712,22 @@ export default function book() {
                 style={{
                   width: '100%',
                   padding: '15px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  background: 'rgba(0, 0, 0, 0.03)',
+                  border: '2px solid rgba(0, 0, 0, 0.08)',
                   borderRadius: '12px',
-                  color: '#ffffff',
+                  color: '#000000',
                   fontSize: '1rem',
                   fontFamily: '"Poppins", sans-serif',
                   transition: 'all 0.3s ease',
                   outline: 'none',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.border = `2px solid ${labColor}`;
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.3)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.08)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)';
                 }}
               />
             </div>
@@ -736,7 +736,7 @@ export default function book() {
             <div>
               <label style={{
                 display: 'block',
-                color: '#FFD700',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '600',
                 marginBottom: '12px',
@@ -751,10 +751,10 @@ export default function book() {
                 style={{
                   width: '100%',
                   padding: '15px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  background: 'rgba(0, 0, 0, 0.03)',
+                  border: '2px solid rgba(0, 0, 0, 0.08)',
                   borderRadius: '12px',
-                  color: formData.level ? '#ffffff' : '#a0a0c0',
+                  color: formData.level ? '#000000' : '#a0a0c0',
                   fontSize: '1rem',
                   fontFamily: '"Poppins", sans-serif',
                   transition: 'all 0.3s ease',
@@ -762,20 +762,20 @@ export default function book() {
                   cursor: 'pointer',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.border = `2px solid ${labColor}`;
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.3)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.08)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)';
                 }}
               >
                 <option value="">Select level</option>
-                <option value="Secondary 1" style={{ background: '#1a1a2e' }}>Secondary 1</option>
-                <option value="Secondary 2" style={{ background: '#1a1a2e' }}>Secondary 2</option>
-                <option value="Secondary 3" style={{ background: '#1a1a2e' }}>Secondary 3</option>
-                <option value="Secondary 4" style={{ background: '#1a1a2e' }}>Secondary 4</option>
-                <option value="Secondary 5" style={{ background: '#1a1a2e' }}>Secondary 5</option>
+                <option value="Secondary 1" style={{ background: '#ffffff' }}>Secondary 1</option>
+                <option value="Secondary 2" style={{ background: '#ffffff' }}>Secondary 2</option>
+                <option value="Secondary 3" style={{ background: '#ffffff' }}>Secondary 3</option>
+                <option value="Secondary 4" style={{ background: '#ffffff' }}>Secondary 4</option>
+                <option value="Secondary 5" style={{ background: '#ffffff' }}>Secondary 5</option>
               </select>
             </div>
 
@@ -783,7 +783,7 @@ export default function book() {
             <div>
               <label style={{
                 display: 'block',
-                color: '#FFD700',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '600',
                 marginBottom: '12px',
@@ -800,22 +800,22 @@ export default function book() {
                 style={{
                   width: '100%',
                   padding: '15px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  background: 'rgba(0, 0, 0, 0.03)',
+                  border: '2px solid rgba(0, 0, 0, 0.08)',
                   borderRadius: '12px',
-                  color: '#ffffff',
+                  color: '#000000',
                   fontSize: '1rem',
                   fontFamily: '"Poppins", sans-serif',
                   transition: 'all 0.3s ease',
                   outline: 'none',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.border = `2px solid ${labColor}`;
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.3)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.08)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)';
                 }}
               />
             </div>
@@ -824,7 +824,7 @@ export default function book() {
             <div>
               <label style={{
                 display: 'block',
-                color: '#FFD700',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '600',
                 marginBottom: '12px',
@@ -839,10 +839,10 @@ export default function book() {
                 style={{
                   width: '100%',
                   padding: '15px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  background: 'rgba(0, 0, 0, 0.03)',
+                  border: '2px solid rgba(0, 0, 0, 0.08)',
                   borderRadius: '12px',
-                  color: formData.subject ? '#ffffff' : '#a0a0c0',
+                  color: formData.subject ? '#000000' : '#a0a0c0',
                   fontSize: '1rem',
                   fontFamily: '"Poppins", sans-serif',
                   transition: 'all 0.3s ease',
@@ -850,23 +850,23 @@ export default function book() {
                   cursor: 'pointer',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.border = `2px solid ${labColor}`;
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.3)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.08)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)';
                 }}
               >
                 <option value="">Select subject</option>
-                <option value="Pure Physics" style={{ background: '#1a1a2e' }}>Pure Physics</option>
-                <option value="Science Physics" style={{ background: '#1a1a2e' }}>Science Physics</option>
-                <option value="Pure Chemistry" style={{ background: '#1a1a2e' }}>Pure Chemistry</option>
-                <option value="Science Chemistry" style={{ background: '#1a1a2e' }}>Science Chemistry</option>
-                <option value="Pure Biology" style={{ background: '#1a1a2e' }}>Pure Biology</option>
-                <option value="Science Biology" style={{ background: '#1a1a2e' }}>Science Biology</option>
-                <option value="Lower Secondary Science" style={{ background: '#1a1a2e' }}>Lower Secondary Science</option>
-                <option value="Upper Secondary Science" style={{ background: '#1a1a2e' }}>Upper Secondary Science</option>
+                <option value="Pure Physics" style={{ background: '#ffffff' }}>Pure Physics</option>
+                <option value="Science Physics" style={{ background: '#ffffff' }}>Science Physics</option>
+                <option value="Pure Chemistry" style={{ background: '#ffffff' }}>Pure Chemistry</option>
+                <option value="Science Chemistry" style={{ background: '#ffffff' }}>Science Chemistry</option>
+                <option value="Pure Biology" style={{ background: '#ffffff' }}>Pure Biology</option>
+                <option value="Science Biology" style={{ background: '#ffffff' }}>Science Biology</option>
+                <option value="Lower Secondary Science" style={{ background: '#ffffff' }}>Lower Secondary Science</option>
+                <option value="Upper Secondary Science" style={{ background: '#ffffff' }}>Upper Secondary Science</option>
               </select>
             </div>
 
@@ -874,7 +874,7 @@ export default function book() {
             <div>
               <label style={{
                 display: 'block',
-                color: '#FFD700',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '600',
                 marginBottom: '12px',
@@ -889,10 +889,10 @@ export default function book() {
                 style={{
                   width: '100%',
                   padding: '15px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '2px solid rgba(255, 255, 255, 0.1)',
+                  background: 'rgba(0, 0, 0, 0.03)',
+                  border: '2px solid rgba(0, 0, 0, 0.08)',
                   borderRadius: '12px',
-                  color: formData.workType ? '#ffffff' : '#a0a0c0',
+                  color: formData.workType ? '#000000' : '#a0a0c0',
                   fontSize: '1rem',
                   fontFamily: '"Poppins", sans-serif',
                   transition: 'all 0.3s ease',
@@ -900,18 +900,18 @@ export default function book() {
                   cursor: 'pointer',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.border = `2px solid ${labColor}`;
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.3)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                  e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.08)';
+                  e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)';
                 }}
               >
                 <option value="">Select type</option>
-                <option value="Individual" style={{ background: '#1a1a2e' }}>Individual</option>
-                <option value="Pairwork" style={{ background: '#1a1a2e' }}>Pairwork</option>
-                <option value="Groupwork" style={{ background: '#1a1a2e' }}>Groupwork</option>
+                <option value="Individual" style={{ background: '#ffffff' }}>Individual</option>
+                <option value="Pairwork" style={{ background: '#ffffff' }}>Pairwork</option>
+                <option value="Groupwork" style={{ background: '#ffffff' }}>Groupwork</option>
               </select>
             </div>
           </div>
@@ -920,7 +920,7 @@ export default function book() {
           <div style={{ marginBottom: '35px' }}>
             <label style={{
               display: 'block',
-              color: '#FFD700',
+              color: '#000000',
               fontSize: '1rem',
               fontWeight: '600',
               marginBottom: '12px',
@@ -936,10 +936,10 @@ export default function book() {
               style={{
                 width: '100%',
                 padding: '15px',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '2px solid rgba(255, 255, 255, 0.1)',
+                background: 'rgba(0, 0, 0, 0.03)',
+                border: '2px solid rgba(0, 0, 0, 0.08)',
                 borderRadius: '12px',
-                color: '#ffffff',
+                color: '#000000',
                 fontSize: '1rem',
                 fontFamily: '"Poppins", sans-serif',
                 transition: 'all 0.3s ease',
@@ -947,12 +947,12 @@ export default function book() {
                 resize: 'vertical',
               }}
               onFocus={(e) => {
-                e.currentTarget.style.border = `2px solid ${labColor}`;
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.3)';
+                e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.border = '2px solid rgba(255, 255, 255, 0.1)';
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.border = '2px solid rgba(0, 0, 0, 0.08)';
+                e.currentTarget.style.background = 'rgba(0, 0, 0, 0.03)';
               }}
             />
           </div>
@@ -966,7 +966,7 @@ export default function book() {
               background: `linear-gradient(135deg, ${labColor} 0%, ${labColor}dd 100%)`,
               border: 'none',
               borderRadius: '15px',
-              color: '#ffffff',
+              color: '#000000',
               fontSize: '1.1rem',
               fontWeight: '700',
               cursor: 'pointer',
@@ -997,7 +997,7 @@ export default function book() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'rgba(0, 0, 0, 0.8)',
+          background: 'rgba(0, 0, 0, 0.4)',
           backdropFilter: 'blur(5px)',
           display: 'flex',
           alignItems: 'center',
@@ -1029,7 +1029,7 @@ export default function book() {
             `}
           </style>
           <div style={{
-            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+            background: 'linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%)',
             borderRadius: '25px',
             padding: '50px',
             maxWidth: '500px',
@@ -1062,14 +1062,14 @@ export default function book() {
             <h2 style={{
               fontFamily: '"Playfair Display", serif',
               fontSize: '2rem',
-              color: '#FFD700',
+              color: '#000000',
               marginBottom: '15px',
               fontWeight: '700',
             }}>
               Booking Confirmed!
             </h2>
             <p style={{
-              color: '#a0a0c0',
+              color: '#000000',
               fontSize: '1rem',
               lineHeight: '1.6',
             }}>

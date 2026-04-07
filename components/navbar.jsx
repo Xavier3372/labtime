@@ -16,24 +16,24 @@ export default  function Navbar() {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-[#1a1a2e] to-[#16213e] shadow-lg">
+    <nav className="bg-gradient-to-r from-[#f0f4f8] to-[#e2e8f0] shadow-md border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-8">
-            <Link href="/" className="text-white hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+            <Link href="/" className="text-black hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
               Home
             </Link>
-            <Link href="/book" className="text-white hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+            <Link href="/book" className="text-black hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
               Book Lab
             </Link>
-            <Link href="/calendar" className="text-white hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+            <Link href="/calendar" className="text-black hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
               Calendar
             </Link>
-            <Link href="/mybookings" className="text-white hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+            <Link href="/mybookings" className="text-black hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
               My Bookings
             </Link>
-            <Link href="/admin" className="text-white hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+            <Link href="/admin" className="text-black hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
               Lab Admin
             </Link>
           </div>
@@ -42,7 +42,7 @@ export default  function Navbar() {
           <div className="flex items-center md:hidden">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-blue-400 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+              className="inline-flex items-center justify-center p-2 rounded-md text-black hover:text-blue-600 hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
               aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
@@ -66,31 +66,31 @@ export default  function Navbar() {
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <Link
               href="/"
-              className="text-white hover:text-blue-600 hover:bg-gray-50 block px-3 py-2 rounded-md text-base font-medium"
+              className="text-black hover:text-blue-600 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium"
             >
               Home
             </Link>
             <Link
               href="/book"
-              className="text-white hover:text-blue-600 hover:bg-gray-50 block px-3 py-2 rounded-md text-base font-medium"
+              className="text-black hover:text-blue-600 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium"
             >
               Book Lab
             </Link>
             <Link
               href="/calendar"
-              className="text-white hover:text-blue-600 hover:bg-gray-50 block px-3 py-2 rounded-md text-base font-medium"
+              className="text-black hover:text-blue-600 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium"
             >
               Calendar
             </Link>
             <Link
               href="/mybookings"
-              className="text-white hover:text-blue-600 hover:bg-gray-50 block px-3 py-2 rounded-md text-base font-medium"
+              className="text-black hover:text-blue-600 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium"
             >
               My Bookings
             </Link>
             <Link
               href="/admin"
-              className="text-white hover:text-blue-600 hover:bg-gray-50 block px-3 py-2 rounded-md text-base font-medium"
+              className="text-black hover:text-blue-600 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium"
             >
               Lab Admin
             </Link>

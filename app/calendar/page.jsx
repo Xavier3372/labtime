@@ -64,8 +64,8 @@ export default function Calendar() {
     { name: 'Physics Lab 2', color: '#FF8E8E', category: 'Physics' },
     { name: 'Chemistry Lab 1', color: '#4ECDC4', category: 'Chemistry' },
     { name: 'Chemistry Lab 2', color: '#6FE6DD', category: 'Chemistry' },
-    { name: 'Biology Lab 1', color: '#95E1D3', category: 'Biology' },
-    { name: 'Biology Lab 2', color: '#B8F4E8', category: 'Biology' },
+    { name: 'Biology Lab 1', color: '#9B59B6', category: 'Biology' },
+    { name: 'Biology Lab 2', color: '#BB7ED4', category: 'Biology' },
   ];
 
   const btcRow = { name: 'BTC', label: 'Bring to Class', color: '#FFD700', category: 'BTC' };
@@ -419,8 +419,8 @@ export default function Calendar() {
                       style={{
                         padding: '8px',
                         borderRadius: '10px',
-                        background: 'rgba(255, 255, 255, 0.02)',
-                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                        background: 'rgba(0, 0, 0, 0.02)',
+                        border: '1px solid rgba(0, 0, 0, 0.06)',
                         minHeight: '80px',
                         display: 'flex',
                         flexDirection: 'column',
@@ -478,6 +478,16 @@ export default function Calendar() {
                               }}>
                                 {booking.instructor}
                               </div>
+                              {booking.level && (
+                                <div style={{
+                                  color: '#000000',
+                                  fontSize: '0.6rem',
+                                  fontWeight: '600',
+                                  marginTop: '2px',
+                                }}>
+                                  {booking.level}
+                                </div>
+                              )}
                             </div>
                           );
                         })
@@ -586,6 +596,16 @@ export default function Calendar() {
                             }}>
                               {booking.instructor}
                             </div>
+                            {booking.level && (
+                              <div style={{
+                                color: '#000000',
+                                fontSize: '0.6rem',
+                                fontWeight: '600',
+                                marginTop: '2px',
+                              }}>
+                                {booking.level}
+                              </div>
+                            )}
                           </div>
                         );
                       })

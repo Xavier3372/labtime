@@ -87,7 +87,7 @@ export default function Home() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+      background: 'linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%)',
       fontFamily: '"Poppins", sans-serif',
       padding: '40px 20px',
     }}>
@@ -105,10 +105,10 @@ export default function Home() {
           <h1 style={{
             fontFamily: '"Playfair Display", serif',
             fontSize: '3.5rem',
-            background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
+            color: '#000000',
+            
+            
+            
             marginBottom: '10px',
             fontWeight: '700',
             letterSpacing: '2px',
@@ -116,7 +116,7 @@ export default function Home() {
             Lab Information
           </h1>
           <p style={{
-            color: '#a0a0c0',
+            color: '#000000',
             fontSize: '1.1rem',
             fontWeight: '300',
           }}>
@@ -133,15 +133,15 @@ export default function Home() {
         }}>
           {/* Lab Hours */}
           <div style={{
-            background: 'rgba(255, 255, 255, 0.03)',
+            background: 'rgba(255, 255, 255, 0.8)',
             borderRadius: '15px',
             padding: '30px',
             backdropFilter: 'blur(20px)',
             border: '2px solid rgba(78, 205, 196, 0.3)',
-            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
+            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06)',
           }}>
             <h2 style={{
-              color: '#FFD700',
+              color: '#000000',
               fontSize: '1.3rem',
               fontWeight: '700',
               margin: '0 0 20px 0',
@@ -162,7 +162,7 @@ export default function Home() {
               border: '1px solid rgba(78, 205, 196, 0.2)',
             }}>
               <span style={{
-                color: '#a0a0c0',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '500',
               }}>
@@ -180,15 +180,15 @@ export default function Home() {
 
           {/* Prep Room Hours */}
           <div style={{
-            background: 'rgba(255, 255, 255, 0.03)',
+            background: 'rgba(255, 255, 255, 0.8)',
             borderRadius: '15px',
             padding: '30px',
             backdropFilter: 'blur(20px)',
             border: '2px solid rgba(69, 183, 209, 0.3)',
-            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
+            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06)',
           }}>
             <h2 style={{
-              color: '#FFD700',
+              color: '#000000',
               fontSize: '1.3rem',
               fontWeight: '700',
               margin: '0 0 20px 0',
@@ -209,7 +209,7 @@ export default function Home() {
               border: '1px solid rgba(69, 183, 209, 0.2)',
             }}>
               <span style={{
-                color: '#a0a0c0',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '500',
               }}>
@@ -229,7 +229,7 @@ export default function Home() {
         {/* Lab Technician Status Section */}
         <div style={{ marginBottom: '40px' }}>
           <h2 style={{
-            color: '#FFD700',
+            color: '#000000',
             fontSize: '1.5rem',
             fontWeight: '700',
             marginBottom: '20px',
@@ -242,7 +242,7 @@ export default function Home() {
         {loading && (
           <div style={{
             textAlign: 'center',
-            color: '#a0a0c0',
+            color: '#000000',
             fontSize: '1.1rem',
             padding: '60px 0',
           }}>
@@ -276,12 +276,12 @@ export default function Home() {
                   <div
                     key={index}
                     style={{
-                      background: 'rgba(255, 255, 255, 0.03)',
+                      background: 'rgba(255, 255, 255, 0.8)',
                       borderRadius: '15px',
                       padding: '30px',
                       backdropFilter: 'blur(20px)',
                       border: `2px solid ${statusColor}44`,
-                      boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
+                      boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06)',
                       display: 'flex',
                       alignItems: 'center',
                       gap: '25px',
@@ -308,7 +308,7 @@ export default function Home() {
                     {/* Info */}
                     <div style={{ flex: 1 }}>
                       <h3 style={{
-                        color: '#FFD700',
+                        color: '#000000',
                         fontSize: '1.3rem',
                         fontWeight: '700',
                         margin: '0 0 8px 0',
@@ -324,7 +324,7 @@ export default function Home() {
                       }}>
                         {tech.location && (
                           <span style={{
-                            color: '#a0a0c0',
+                            color: '#000000',
                             fontSize: '0.95rem',
                             display: 'flex',
                             alignItems: 'center',
@@ -358,14 +358,14 @@ export default function Home() {
               })
             ) : (
               <div style={{
-                background: 'rgba(255, 255, 255, 0.03)',
+                background: 'rgba(255, 255, 255, 0.8)',
                 borderRadius: '15px',
                 padding: '40px',
                 textAlign: 'center',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(0, 0, 0, 0.08)',
               }}>
                 <p style={{
-                  color: '#a0a0c0',
+                  color: '#000000',
                   fontSize: '1.1rem',
                   margin: 0,
                 }}>
@@ -379,15 +379,15 @@ export default function Home() {
 
         {/* Important Notes Section */}
         <div style={{
-          background: 'rgba(255, 255, 255, 0.03)',
+          background: 'rgba(255, 255, 255, 0.8)',
           borderRadius: '15px',
           padding: '30px',
           backdropFilter: 'blur(20px)',
           border: '2px solid rgba(255, 165, 0, 0.3)',
-          boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
+          boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06)',
         }}>
           <h2 style={{
-            color: '#FFD700',
+            color: '#000000',
             fontSize: '1.3rem',
             fontWeight: '700',
             margin: '0 0 20px 0',
@@ -412,13 +412,13 @@ export default function Home() {
               borderRadius: '12px',
               border: '1px solid rgba(255, 165, 0, 0.15)',
             }}>
-              <span style={{ fontSize: '1.3rem' }}><FaCalendarAlt /></span>
+              <span style={{ fontSize: '1.3rem', color: '#000000' }}><FaCalendarAlt /></span>
               <span style={{
-                color: '#ffffff',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '500',
               }}>
-                Book labs at least <strong style={{ color: '#FFA500' }}>5 days</strong> in advance
+                Book labs at least <strong style={{ color: '#1e40af' }}>5 days</strong> in advance
               </span>
             </div>
             <div style={{
@@ -432,11 +432,11 @@ export default function Home() {
             }}>
               <span style={{ fontSize: '1.3rem' }}>❌</span>
               <span style={{
-                color: '#ffffff',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '500',
               }}>
-                Cancel bookings at least <strong style={{ color: '#FFA500' }}>24 hours</strong> in advance
+                Cancel bookings at least <strong style={{ color: '#1e40af' }}>24 hours</strong> in advance
               </span>
             </div>
             <div style={{
@@ -448,13 +448,13 @@ export default function Home() {
               borderRadius: '12px',
               border: '1px solid rgba(255, 165, 0, 0.15)',
             }}>
-              <FaWrench style={{ fontSize: '1.3rem' }} />
+              <FaWrench style={{ fontSize: '1.3rem', color: '#000000' }} />
               <span style={{
-                color: '#ffffff',
+                color: '#000000',
                 fontSize: '1rem',
                 fontWeight: '500',
               }}>
-                Report any breakages <strong style={{ color: '#FFA500' }}>immediately</strong>
+                Report any breakages <strong style={{ color: '#1e40af' }}>immediately</strong>
               </span>
             </div>
           </div>
