@@ -115,7 +115,7 @@ export default function mybookings() {
                 setPhoneInput(e.target.value);
                 setError('');
               }}
-              placeholder="e.g., 96797912"
+              placeholder="e.g., 96437925"
               required
               style={{
                 width: '100%',
